@@ -14,17 +14,19 @@
 
 # Introduction
 
-Testing web applications can be a chore. Traditional UI testing often requires writing complex scripts, managing fragile selectors, and jumping through hoops just to get a simple flow verified. But what if you could just *tell* an agent what to test, and it just... did it?
+Testing web applications can be a chore. Traditional UI testing often feels like a constant battle against fragility. You find yourself writing complex scripts, managing brittle CSS and XPath selectors, and jumping through hoops just to get a simple user flow verified.
 
-In this codelab, we'll explore how to use **Gemini CLI** and **BrowserMCP** to create and run automated UI tests using natural language.
+But what if you could just *tell* an agent what to test in natural language, and it just... did it?
+
+In this codelab, we'll explore how to use **Gemini CLI** and multimodal tools like **BrowserMCP**. You'll see how to create and run automated UI tests using natural language.
 
 ## What You'll Learn
 
-- ✅ The challenges of traditional UI testing.
 - ✅ What the Model Context Protocol (MCP) is and why it's a game-changer.
 - ✅ How BrowserMCP enables AI agents to control web browsers.
 - ✅ How to run automated UI tests from the Gemini CLI.
-- ✅ Now let's do it with Playwright using a skill.
+- ✅ Understanding skills.
+- ✅ Now performing our UI tests with Playwright and a skill.
 - ✅ A quick glimpse of doing this with Antigravity, out-of-the-box.
 - ✅ Other use cases for browser control.
 
@@ -77,16 +79,34 @@ export GEMINI_API_KEY="your-api-key"
 
 # Section 1: The Challenge of UI Testing
 
-Traditional UI testing is hard. You have to:
-- Learn specific frameworks (Selenium, Cypress, Playwright).
-- Deal with "flaky" tests that fail because of timing or minor DOM changes.
-- Maintain thousands of lines of code just to check if a button works.
+Traditional UI testing is notoriously difficult to get right and even harder to maintain. Common pain points include:
 
-We need a better way.
+- **The "Flakiness" Factor**: Tests that pass one minute and fail the next due to timing issues, race conditions, or slow-loading assets (the "flaky test" problem).
+- **Brittle Selectors**: Relying on specific DOM structures (like `div > div > button`) that break with the slightest UI tweak, leading to constant script maintenance.
+- **High Learning Curve**: Requiring developers to master complex DSLs and framework-specific quirks (Cypress, Selenium, Playwright) just to automate a basic click.
+- **Environment Parity**: Wrestling with hard-to-replicate application states and the overhead of cleaning up test data.
+
+We need a way to test that focuses on **intent** rather than **implementation**.
 
 # Section 2: Our Demo Application
 
-The app we're testing today is a simple web interface. It has a login flow, a dashboard, and some interactive components. While it looks simple, manually clicking through every scenario every time you make a change is a waste of your brilliant mind.
+The app we're testing today is the **Solaris Edge Gateway**—a futuristic, dark-themed dashboard for managing edge security telemetry. 
+
+### Why this app?
+It’s built to provide a realistic testing surface with:
+- **Mock Authentication**: A login flow requiring specific credentials.
+- **Dynamic Content**: Telemetry cards and security logs that simulate real-time data.
+- **Interactive States**: Navigation menus and form inputs that change based on user action.
+- **Modern Tech**: Built with React and Vite for a fast, responsive experience.
+
+### Launching the App
+To start the application, simply run:
+
+```bash
+make dev
+```
+
+Once the development server is running, the app will be available at `http://localhost:5173`. (Note: Vite's default port is 5173, but we'll use this URL in our tests).
 
 # Section 3: Intro to MCP
 
