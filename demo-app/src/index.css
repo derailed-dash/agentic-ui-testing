@@ -58,9 +58,12 @@ h1, h2, h3 {
 }
 
 .flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-1 { flex: 1; }
 .items-center { align-items: center; }
 .justify-center { justify-content: center; }
 .justify-between { justify-content: space-between; }
+.min-h-0 { min-height: 0; }
 .gap-4 { gap: 1rem; }
 .mt-4 { margin-top: 1rem; }
 

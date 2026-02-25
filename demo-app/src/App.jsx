@@ -85,15 +85,6 @@ const LoginPage = ({ onLogin }) => {
 
 const DashboardView = () => (
   <div className="animate-fade-in">
-    <div className="flex justify-between items-center mb-8">
-      <h2>System Overview</h2>
-      <div className="flex gap-4">
-        <span className="glass px-4 py-2 flex items-center gap-4" style={{ fontSize: '0.875rem' }}>
-          <Activity size={16} color="var(--success-color)" /> Status: OPTIMAL
-        </span>
-      </div>
-    </div>
-    
     <div className="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
       <div className="glass p-6">
         <h3 className="mb-2" style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Active Threats</h3>
@@ -122,7 +113,6 @@ const DashboardView = () => (
 
 const SecurityLogsView = () => (
   <div className="animate-fade-in">
-    <h2 className="mb-8">Security Audit Logs</h2>
     <div className="glass" style={{ overflow: 'hidden' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse' }} id="logs-table">
         <thead style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--glass-border)' }}>
@@ -172,8 +162,7 @@ const ProfileView = () => {
 
   return (
     <div className="animate-fade-in">
-      <h2 className="mb-8">Operator Profile</h2>
-      <div className="glass p-8" style={{ maxWidth: '600px' }}>
+      <div className="glass p-8" style={{ maxWidth: '600px', margin: '0 auto' }}>
         <div className="input-group">
           <label className="input-label" htmlFor="operator-name">Display Name</label>
           <input 
@@ -254,7 +243,7 @@ export default function App() {
       </aside>
 
       {/* Main Content */}
-      <main style={{ flex: 1, padding: '2rem' }}>
+      <main className="flex-1 flex flex-col p-8" style={{ minHeight: '100vh' }}>
         <header className="flex justify-between items-center mb-12">
           <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
             System Gateway / <span style={{ color: 'var(--text-primary)', textTransform: 'capitalize' }}>{view}</span>
@@ -267,9 +256,27 @@ export default function App() {
           </div>
         </header>
 
-        {view === 'dashboard' && <DashboardView />}
-        {view === 'logs' && <SecurityLogsView />}
-        {view === 'profile' && <ProfileView />}
+        {/* View Headings (moved up) */}
+        <div className="flex justify-between items-center mb-12">
+          {view === 'dashboard' && (
+            <>
+              <h2>System Overview</h2>
+              <div className="flex gap-4">
+                <span className="glass px-4 py-2 flex items-center gap-4" style={{ fontSize: '0.875rem' }}>
+                  <Activity size={16} color="var(--success-color)" /> Status: OPTIMAL
+                </span>
+              </div>
+            </>
+          )}
+          {view === 'logs' && <h2>Security Audit Logs</h2>}
+          {view === 'profile' && <h2>Operator Profile</h2>}
+        </div>
+
+        <div className="flex-1 flex flex-col justify-center min-h-0">
+          {view === 'dashboard' && <DashboardView />}
+          {view === 'logs' && <SecurityLogsView />}
+          {view === 'profile' && <ProfileView />}
+        </div>
       </main>
     </div>
   );
