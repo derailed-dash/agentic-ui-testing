@@ -155,9 +155,17 @@ const ProfileView = () => {
   const [operator, setOperator] = useState('Dazbo');
   const [saved, setSaved] = useState(false);
 
+  useEffect(() => {
+    if (saved) {
+      const timerId = setTimeout(() => {
+        setSaved(false);
+      }, 2000);
+      return () => clearTimeout(timerId);
+    }
+  }, [saved]);
+
   const handleSave = () => {
     setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
   };
 
   return (

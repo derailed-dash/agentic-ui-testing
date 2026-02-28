@@ -1,4 +1,4 @@
-# automated-ui-testing-demo-with-geminicli
+# agentic-ui-testing
 
 This repo is intended to provide a hands-on demo and walkthrough of executing automated UI tests from Gemini CLI. The demo will be consumable as a Google Codelab.
 
@@ -8,7 +8,7 @@ It is based on my blog [Creating an Automated UI Test of Your Web App in Seconds
 
 - [My related blog - Creating an Automated UI Test of Your Web App in Seconds with Gemini CLI and BrowserMCP](https://medium.com/google-cloud/creating-an-automated-ui-test-of-your-web-app-in-seconds-with-gemini-cli-and-browsermcp-09cf4afb8940).
 - [Google Codelabs](https://codelabs.developers.google.com/)
-- [This Codelab](https://codelabs.developers.google.com/automated-ui-testing-demo-with-geminicli) - This does not yet exist.
+- [This Codelab](https://codelabs.developers.google.com/agentic-ui-testing) - This does not yet exist.
 
 ## Structure of the Demo / Codelab
 
