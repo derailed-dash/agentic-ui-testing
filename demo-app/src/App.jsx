@@ -34,7 +34,7 @@ const LoginPage = ({ onLogin }) => {
       <div className="glass p-8 animate-fade-in" style={{ width: '100%', maxWidth: '400px' }}>
         <div className="text-center mb-8">
           <Shield size={48} color="var(--accent-color)" className="mx-auto" />
-          <h1 className="mt-4">Solaris Edge Gateway</h1>
+          <h1 className="mt-4">The Dazbo Omni-Dash</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Secure Terminal Access</p>
         </div>
         
@@ -200,7 +200,7 @@ export default function App() {
       <aside className="glass" style={{ width: '260px', borderRadius: 0, borderTop: 'none', borderBottom: 'none', borderLeft: 'none', display: 'flex', flexDirection: 'column' }}>
         <div className="p-8 text-center flex items-center gap-4 mb-4">
           <Shield size={32} color="var(--accent-color)" />
-          <span style={{ fontWeight: 700, fontSize: '1.2rem' }}>SOLARIS</span>
+          <span style={{ fontWeight: 700, fontSize: '1.2rem' }}>OMNI-DASH</span>
         </div>
         
         <nav style={{ flex: 1 }}>
