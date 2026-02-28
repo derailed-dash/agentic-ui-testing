@@ -14,17 +14,19 @@
 
 # Introduction
 
-Testing web applications can be a chore. Traditional UI testing often requires writing complex scripts, managing fragile selectors, and jumping through hoops just to get a simple flow verified. But what if you could just *tell* an agent what to test, and it just... did it?
+Testing web applications can be a chore. Traditional UI testing often feels like a constant battle against fragility. You find yourself writing complex scripts, managing brittle CSS and XPath selectors, and jumping through hoops just to get a simple user flow verified.
 
-In this codelab, we'll explore how to use **Gemini CLI** and **BrowserMCP** to create and run automated UI tests using natural language.
+But what if you could just *tell* an agent what to test in natural language, and it just... did it?
+
+In this codelab, we'll explore how to use **Gemini CLI** and multimodal tools like **BrowserMCP**. You'll see how to create and run automated UI tests using natural language.
 
 ## What You'll Learn
 
-- ✅ The challenges of traditional UI testing.
 - ✅ What the Model Context Protocol (MCP) is and why it's a game-changer.
 - ✅ How BrowserMCP enables AI agents to control web browsers.
 - ✅ How to run automated UI tests from the Gemini CLI.
-- ✅ Now let's do it with Playwright using a skill.
+- ✅ Understanding skills.
+- ✅ Now performing our UI tests with Playwright and a skill.
 - ✅ A quick glimpse of doing this with Antigravity, out-of-the-box.
 - ✅ Other use cases for browser control.
 
@@ -75,30 +77,61 @@ You'll need an API key from [Google AI Studio](https://aistudio.google.com/). On
 export GEMINI_API_KEY="your-api-key"
 ```
 
-# Section 1: The Challenge of UI Testing
+# The Challenge of UI Testing
 
-Traditional UI testing is hard. You have to:
-- Learn specific frameworks (Selenium, Cypress, Playwright).
-- Deal with "flaky" tests that fail because of timing or minor DOM changes.
-- Maintain thousands of lines of code just to check if a button works.
+Traditional UI testing is notoriously difficult to get right and even harder to maintain. Common pain points include:
 
-We need a better way.
+- **Test "Flakiness"**: Tests that pass one minute and fail the next due to timing issues, race conditions, or slow-loading assets.
+- **Brittle Selectors**: Relying on specific DOM structures (like `div > div > button`) that break with the slightest UI tweak, leading to constant script maintenance.
+- **High Learning Curve**: Requiring developers to master complex domain-specific languages and framework-specific quirks (Cypress, Selenium, Playwright) just to automate a basic click.
+- **Environment Parity**: Wrestling with hard-to-replicate application states and the overhead of cleaning up test data.
 
-# Section 2: Our Demo Application
+We need a way to test that focuses on **intent** rather than **implementation**.
 
-The app we're testing today is a simple web interface. It has a login flow, a dashboard, and some interactive components. While it looks simple, manually clicking through every scenario every time you make a change is a waste of your brilliant mind.
+# Our Demo Application
 
-# Section 3: Intro to MCP
+The app we're testing today is **The Dazbo Omni-Dash** — a futuristic, dark-themed dashboard for managing edge security telemetry. 
 
-The **Model Context Protocol (MCP)** is an open standard that allows AI models to safely and easily interact with external tools and data. Instead of hard-coding every API call, you provide the model with a "manual" (the MCP server) and let it decide which tool to use based on your prompt.
+## Why this app?
 
-# Section 4: Intro to BrowserMCP
+It’s built to provide a realistic testing surface with:
 
-**BrowserMCP** is an MCP server that gives AI agents "eyes" and "hands" in a web browser. It can:
+- **Mock Authentication**: A login flow requiring specific credentials.
+- **Dynamic Content**: Telemetry cards and security logs that simulate real-time data.
+- **Interactive States**: Navigation menus and form inputs that change based on user action.
+- **Modern Tech**: Built with React and Vite for a fast, responsive experience.
+
+## Launching the App
+
+To start the application, simply run:
+
+```bash
+make dev
+```
+
+The development server should start very quickly, and the app will be available at `http://localhost:5173`.
+
+# MCP to the Rescue
+
+## Introduction to MCP
+
+The **Model Context Protocol (MCP)** is an open standard that allows AI models and agents to safely and easily interact with external tools, APIs, and data. Think of it as the universal adapter that allows models and agents to find and execute the tools it has access to.
+
+Traditionally, integrating Large Language Models (LLMs) with external data and tools required developers to write custom, hard-coded API connections for every new data source, creating an unsustainable "M x N" integration problem where every new model and tool multiplies the maintenance burden. The Model Context Protocol (MCP) solves this by removing the need to write specific code to orchestrate these capabilities. Instead of explicitly coding complex execution workflows, developers can rely on the LLM to interpret a user's **natural language** requests and dynamically reason about which tools to use on the fly. When a user issues a natural language command (like "Find the latest sales report and email it"), the LLM discovers the available capabilities and generates a structured request to invoke a specific tool. The MCP client acts as a translator, routing this request to the designated MCP server, which executes the action or fetches the data and returns the context to the model. This empowers the AI to act autonomously without the developer having to hard-code the specific execution path. 
+
+Because MCP creates a universal standard — often described as the "USB-C for AI applications" — it unlocks massive **off-the-shelf reusability**. Developers can build an MCP server once, and any MCP-compatible AI host can instantly connect to it, eliminating the M x N integration problem. You no longer have to build custom API bridges for every platform; instead, you can leverage the ecosystem of pre-built, open-source MCP servers for common services like GitHub, Slack, databases, whatever; plugging them straight into your agentic workflows. This modular, plug-and-play architecture ensures that if you switch LLM providers or upgrade your tools later, your core integration infrastructure remains completely unchanged.
+
+## What is BrowserMCP?
+
+**BrowserMCP** is an MCP server that gives AI agents "eyes" and "hands" it needs to interact with a web browser. It can:
+
 - Navigate to URLs.
 - Click buttons and type text.
 - Inspect the DOM.
-- Take screenshots and record videos.
+
+## Installing
+
+tbc
 
 # Section 5: Running the Test
 
