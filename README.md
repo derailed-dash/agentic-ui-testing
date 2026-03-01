@@ -250,6 +250,8 @@ A few things to note about the prompt above:
 
 Cool, right?
 
+We're done with BrowserMCP for now, so **Disconnect** it in your browser.
+
 # Automation with Skills and Playwright
 
 ## Limitations of BrowserMCP
@@ -294,7 +296,97 @@ With this approach we install Playwright CLI locally, and then give our agent th
 
 ## Installing
 
-tbc
+Let's first install the open source Microsoft Playwright CLI:
+
+```bash
+# Pre-req: nodejs installed
+npm install -g @playwright/cli@latest # Install Playwright CLI globally
+npm install @playwright/test # Install Playwright test framework
+
+npx playwright install-deps # Install dependencies
+playwright install chromium # Install chromium browser in Linux / WSL 
+```
+
+And now let's add the skill:
+
+```bash
+# Tell playwright-cli to install its own skill
+# This installs to ~/.claude/skills/playwright-cli
+playwright-cli install --skills
+```
+
+Note that the skill folder contains a "standard" skill structure. The location installed by the `playwright-cli install --skills` command defaults to a location used by the Claude Code assistant. So let's move it to a more standard location, where it will be found by both Gemini CLI and Antigravity.
+
+```bash
+# Move the skill to more "standard" location
+mkdir -p ~/.gemini/skills
+
+# MOve the playwright-cli skill
+mv ~/.claude/skills/playwright-cli ~/.gemini/skills/
+
+# Launch Playwright CLI with visible browser
+playwright-cli open https://playwright.dev --headed
+```
+
+I also want Gemini to be able use Playwright in "headed" mode, i.e. with a visible UI. But the skill doesn't tell Gemini how to do that. So I've added these lines to `~/.gemini/skills/playwright-cli/SKILL.md` in the `Core` section:
+
+```bash
+# Add the following under the "playwright-cli open" command
+
+# Run in headed mode so we can see the browser
+playwright-cli open https://playwright.dev --headed
+```
+
+## Testing with Playwright
+
+Before we continue, let's temporarily disable `BrowserMCP` so that the agent doesn't get confused about which tools to use.
+
+In Gemini CLI:
+
+```bash
+/mcp disable browsermcp
+```
+
+Now let's ask Gemini to navigate our application with Playwright.
+
+First, as before, we need to launch the application.
+
+```bash
+make dev
+```
+
+But unlike with BrowserMCP, we don't need to fire up the browser first. Playwright will do that for us.
+
+Now enter this prompt into Gemini CLI in a separate terminal:
+
+```text
+Using Playwright, connect to the application at http://localhost:5173. Then login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table.
+```
+
+(As always, Gemini CLI will ask for permission before running any tools.)
+
+What's different here?
+
+- We didn't need to start the browser first.
+- We didn't need to connect an extension.
+- We don't need to tell the agent to logoff first. The test instantiates from a "clean" session.
+- We're able to take screenshots and save them as local files.
+
+Shortly after you should see a `dashboard.png` file in the `output` folder.
+
+Note that you'll see the tool calls executing in Gemini CLI, but you won't see the browser UI. That's because Playwright runs in "headless mode" by default.
+
+But if you re-run with this amended prompt, you'll be able to see the UI too:
+
+```text
+Using Playwright, connect to the application at http://localhost:5173 in **headed** mode, and keep the browser open when you're done. Login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table.
+```
+
+Shortly, Gemini CLI output should look something like this:
+
+![Result of headed execution with Playwright](media/headed-execution.png)
+
+How awesome was that?
 
 # You Can Do This in Antigravity!
 
