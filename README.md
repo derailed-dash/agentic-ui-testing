@@ -149,8 +149,6 @@ We need a way to test that focuses on **intent** rather than **implementation**.
 
 # MCP to the Rescue
 
-## Introduction to MCP
-
 The **Model Context Protocol (MCP)** is an open standard that allows AI models and agents to safely and easily interact with external tools, APIs, and data. Think of it as the universal adapter that allows models and agents to find and execute the tools it has access to.
 
 Traditionally, integrating Large Language Models (LLMs) with external data and tools required developers to write custom, hard-coded API connections for every new data source, creating an unsustainable "M x N" integration problem where every new model and tool multiplies the maintenance burden. The Model Context Protocol (MCP) solves this by removing the need to write specific code to orchestrate these capabilities. Instead of explicitly coding complex execution workflows, developers can rely on the LLM to interpret a user's **natural language** requests and dynamically reason about which tools to use on the fly. 
@@ -161,44 +159,75 @@ When a user issues a natural language command (like "Find the latest sales repor
 
 Because MCP creates a universal standard — often described as the _"USB-C for AI applications"_ — it unlocks massive **off-the-shelf reusability**. Developers can build an MCP server once, and any MCP-compatible AI host can instantly connect to it, eliminating the M x N integration problem. You no longer have to build custom API bridges for every platform; instead, you can leverage the ecosystem of pre-built, open-source MCP servers for common services like GitHub, Slack, databases, whatever; plugging them straight into your agentic workflows. This modular, plug-and-play architecture ensures that if you switch LLM providers or upgrade your tools later, your core integration infrastructure remains completely unchanged.
 
+# Automation with BrowserMCP
+
 ## What is BrowserMCP?
 
-This is the first tool we're going to play with today. **BrowserMCP** is an MCP server that gives AI agents "eyes" and "hands" it needs to interact with a web browser. In a nutshell, it mimics human interaction with a browser.
+This is the first tool we're going to play with today. **BrowserMCP** is an MCP server that gives AI agents "eyes" and "hands" it needs to interact with a web browser. In a nutshell, it mimics human interaction with a browser. It's open source and you can checkout the GitHub repo [here](https://github.com/BrowserMCP/mcp).
 
 ![BrowserMCP](media/browser-mcp.png)
 
 Here are some of its capabilities:
 
 - It can navigate to URLs.
-- It can click buttons and type text into forms.
 - It can inspect the DOM.
+- It can click buttons and type text into forms.
+- It can drag-and-drop.
+- It can take screenshots.
+- It can read browser console logs.
 - It's fast: the automation happens locally on your machine.
-
-It's open source and you can checkout the GitHub repo [here](https://github.com/BrowserMCP/mcp).
 
 ## Installing Browser MCP
 
-tbc
+To use BrowserMCP, you need to do two things:
 
-# Section 5: Running the Test
+1. Install the BrowserMCP extension into Chrome (or any Chromium-based browser).
+2. Configure the MCP server for your agent.
 
-Now for the magic. We'll use the `gemini` CLI to run a test.
+To install the extension, just follow the instructions [here](https://docs.browsermcp.io/setup-extension). This takes just a few seconds. And once it's installed, you click on "Connect" in the extension to allow your current tab to be controlled by your agent. 
+
+![BrowserMCP](media/browsermcp-extension.png)
+
+Next, we need to add the MCP configuration to our client:
+
+```json
+  "mcpServers": {
+    "browsermcp": {
+      "command": "npx",
+      "args": ["@browsermcp/mcp@latest"]
+    }
+  }
+```
+
+Where do you configure this? Well, that depends on your agent. For example, in Gemini CLI: `~/.gemini/config.json`.
+
+Note that having nodejs installed is a prerequisite for running the MCP server. You can get it from [nodejs.org](https://nodejs.org/en/download).
+
+## Testing with BrowserMCP
+
+Now for the magic. First, let's launch the demo app:
 
 ```bash
-gemini "Go to http://localhost:3000, login as 'admin' with password 'password', and verify that the dashboard title says 'Welcome Back'."
+make dev
+```
+
+Now we can use the `gemini` CLI to run a test:
+
+```text
+Go to http://localhost:3000, login as 'admin' with password 'password', and verify that the dashboard title says 'Welcome Back'.
 ```
 
 Gemini will use BrowserMCP to perform these actions and report back. No code required.
 
-# Section 6: Automation with Playwright Skill
+# Automation with Playwright Skill
 
 Once you're happy with the manual flow, you might want to bake it into a CI/CD pipeline. We can use a **Playwright Skill** to convert our natural language intent into a robust, repeatable Playwright script.
 
-# Section 7: You Can Do This in Antigravity!
+# You Can Do This in Antigravity!
 
 The experience you see in the CLI is even more powerful within **Antigravity**, Google's agentic coding assistant. Antigravity integrates these tools directly into your workflow, allowing for even tighter feedback loops.
 
-# Section 8: Other Use Cases
+# Other Use Cases for Browser Automation
 
 Browser control isn't just for testing. You can use it for:
 - Data scraping.
