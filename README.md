@@ -44,14 +44,17 @@ In this codelab, we'll explore how to use **Gemini CLI** and multimodal tools li
 
 Before we dive into the cool stuff, let's make sure you have everything you need.
 
-## Clone the Demo Repo
+## Tools
 
-I've created a demo repo on GitHub. It includes a sample application we can use for our UI tewsting. Go ahead and clone it:
+This lab assumes that you already have:
 
-```bash
-git clone https://github.com/derailed-dash/agentic-ui-testing
-cd agentic-ui-testing
-```
+- Chrome browser
+- Gemini CLI (which itself depends on nodejs)
+- Git
+
+The instructions assume you're working in a Linux (or WSL) or macOS environment. So, if you're on Windows, you can follow along with WSL. 
+
+Also, you can use Google Cloud Shell which already has all of these tools installed. Cloud Shell is available to you in the [Google Cloud Console](https://console.cloud.google.com/), once you've configured your Google Cloud Project. (See the next step.)
 
 ## Create a Google Cloud Project
 
@@ -62,6 +65,15 @@ Otherwise, you're going to need a Google Cloud Project to follow along. We won't
 If you're familiar with Google Cloud you can create a new project [here](https://console.cloud.google.com/projectcreate). 
 
 Alternatively, you can create a Google Cloud project from right inside [Google AI Studio](https://aistudio.google.com/)! I'll show you how in the next step.
+
+## Clone the Demo Repo
+
+I've created a demo repo on GitHub. It includes a sample application we can use for our UI tewsting. Go ahead and clone it:
+
+```bash
+git clone https://github.com/derailed-dash/agentic-ui-testing
+cd agentic-ui-testing
+```
 
 ## Create a Gemini API Key for Free
 
@@ -205,19 +217,31 @@ Note that having nodejs installed is a prerequisite for running the MCP server. 
 
 ## Testing with BrowserMCP
 
-Now for the magic. First, let's launch the demo app:
+Now for the magic. First, let's launch Gemini CLI and then run `/mcp` to check that it is properly installed. You should see a list of tools, like this:
+
+![BrowserMCP](media/browsermcp-tools-geminicli.png)
+
+Then launch the demo app:
 
 ```bash
 make dev
 ```
 
+We need to open the app in our Chrome browser, and connect the BrowserMCP extension in that tab. Follow the link from the `run` command or open `http://localhost:5173` directly in your browser. Then click the BrowserMCP extension icon and click on "Connect".
+
+![BrowserMCP](media/connect-browsermcp.png)
+
 Now we can use the `gemini` CLI to run a test:
 
 ```text
-Go to http://localhost:3000, login as 'admin' with password 'password', and verify that the dashboard title says 'Welcome Back'.
+Using BrowserMCP, connect to the application at http://localhost:5173, login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'.
 ```
 
-Gemini will use BrowserMCP to perform these actions and report back. No code required.
+Gemini CLI might first check that the demo application is running on the specified port. Then it will prompt you to confirm the tool actions it plans to take:
+
+![BrowserMCP](media/browsermcp-browser-navigate-action.png)
+
+Allow Gemini CLI to run all BrowserMCP tools for this session. Then go back to the browser, and watch the automated interactions take place!
 
 # Automation with Playwright Skill
 
