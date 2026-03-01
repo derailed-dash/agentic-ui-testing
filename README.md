@@ -282,6 +282,8 @@ Here's the really clever part: **progressive disclosure**. Instead of shoving ev
 
 *Think of it like that scene in The Matrix: The agent looks at a problem, realizes it needs to know Playwright, downloads the skill, and suddenly: "I know kung fu." Boom. Instant expert.*
 
+If you want to know more about skills, check out Romin's blog post [Tutorial : Getting Started with Google Antigravity Skills](https://medium.com/google-cloud/tutorial-getting-started-with-antigravity-skills-864041811e0d). He also has a [codelab](https://codelabs.developers.google.com/getting-started-with-antigravity-skills?hl=en#0) on the same topic.
+
 ## Why Skills are Perfect for Playwright
 
 Using a skill here is a great choice. Playwright is incredibly powerful, but its syntax can be tricky. By giving the agent a Playwright skill, we don't have to worry about our LLM hallucinating outdated syntax or writing brittle selectors. We are giving it a curated, authoritative playbook on exactly how to use Playwright properly.
