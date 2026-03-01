@@ -1,4 +1,4 @@
-# Codelab: Automated UI Testing with Gemini CLI and BrowserMCP, and Playwright
+# Google Developer Codelab: Automated UI Testing with Gemini CLI and BrowserMCP, and Playwright
 
 # About this Repo
 
