@@ -15,11 +15,11 @@
 
 # Introduction
 
-![Traditional testing chaos vs Agentic testing magic](media/agentic_testing_magic.png)
-
 Testing web applications can be a chore. Traditional UI testing often feels like a constant battle against fragility. You find yourself writing complex scripts, managing brittle CSS and XPath selectors, and jumping through hoops just to get a simple user flow verified.
 
 But what if you could just *tell* an agent what to test in natural language, and it just... did it?
+
+![Traditional testing chaos vs Agentic testing magic](media/agentic_testing_magic.png)
 
 In this codelab, we'll explore how to use **Gemini CLI** and multimodal tools like **BrowserMCP**. You'll see how to create and run automated UI tests using natural language.
 
@@ -39,23 +39,24 @@ In this codelab, we'll explore how to use **Gemini CLI** and multimodal tools li
 2. ✅ Explore a demo application that needs testing.
 3. ✅ Use Gemini CLI to interact with the application via BrowserMCP.
 4. ✅ Teach your agent how to use Playwright with an agent skill.
-5. ✅ Antigravity Browser Control demo.
 
 # Prerequisites
 
-Before we dive into the cool stuff, let's make sure you have everything you need.
+Before we dive into the cool stuff, let's make sure you have everything you need. 
+
+This codelab makes use of [Gemini CLI](https://geminicli.com/), MCP tools, agent skills, and a React demo application.
 
 ## Tools
 
 This lab assumes that you already have:
 
-- Chrome browser
-- Gemini CLI (which itself depends on nodejs)
-- Git
+- **Chrome browser**
+- **Gemini CLI** (which itself depends on [nodejs](https://nodejs.org/))
+- **Git**
 
-The instructions assume you're working in a Linux (or WSL) or macOS environment. So, if you're on Windows, you can follow along with WSL. 
+The instructions assume you're working in a Linux (or WSL) or macOS environment. If you're on Windows (like me), you can follow along using [WSL](https://learn.microsoft.com/en-us/windows/wsl/). 
 
-Also, you can use Google Cloud Shell which already has all of these tools installed. Cloud Shell is available to you in the [Google Cloud Console](https://console.cloud.google.com/), once you've configured your Google Cloud Project. (See the next step.)
+_(Note that BrowserMCP will not work from Google Cloud Shell, because it will only connect to a local browser running on the same machine.)_
 
 ## Create a Google Cloud Project
 
@@ -63,18 +64,7 @@ If you already have a Gemini API key, you can use it and skip this step.
 
 Otherwise, you're going to need a Google Cloud Project to follow along. We won't be deploying any Google Cloud services, but you need the project to associate a Gemini API key. (You need the key to use Gemini.)
 
-If you're familiar with Google Cloud you can create a new project [here](https://console.cloud.google.com/projectcreate). 
-
-Alternatively, you can create a Google Cloud project from right inside [Google AI Studio](https://aistudio.google.com/)! I'll show you how in the next step.
-
-## Clone the Demo Repo
-
-I've created a demo repo on GitHub. It includes a sample application we can use for our UI testing. Go ahead and clone it:
-
-```bash
-git clone https://github.com/derailed-dash/agentic-ui-testing
-cd agentic-ui-testing
-```
+If you're familiar with Google Cloud you can create a new project [here](https://console.cloud.google.com/projectcreate). Alternatively, you can create a Google Cloud project from right inside [Google AI Studio](https://aistudio.google.com/). I'll show you how in the next step.
 
 ## Create a Gemini API Key for Free
 
@@ -86,21 +76,32 @@ You'll see something like this:
 
 Here's where your existing keys will be listed, if you have any. Or to create a new key, click on "Create API Key".
 
-![Create API Key](media/create-new-key.png)
+<img src="media/create-new-key.png" alt="Create a new API key" width="600">
+<br><br>
 
 Here you can select an existing Google Cloud project, or go ahead and create a new one. Here I've created a new project called `agentic-ui-demo`:
 
-![New project for the key](media/new-project.png)
+<img src="media/new-project.png" alt="Create a new API key" width="600">
+<br><br>
 
 At this point we have a project and the associated Gemini API key. We haven't enabled billing, so we're limited to the generous free quota. But if you want more quota, you can go ahead and enable billing by clicking on "Set up billing".
 
-Now that we've got our key, we need to load it into our local development environment. Make a copy of the sample `.env.template` file, called `.env`. You can do this in your editor, or just run this command:
+## Setup the Development Environment
+
+I've created a demo repo on GitHub. It includes a sample application we can use for our UI testing. Go ahead and clone it by running this from your local terminal:
+
+```bash
+git clone https://github.com/derailed-dash/agentic-ui-testing
+cd agentic-ui-testing
+```
+
+Next, make a copy of the sample `.env.template` file, called `.env`. You can do this in your editor, or just run this command:
 
 ```bash
 cp .env.template .env
 ```
 
-Update this `.env` file with your own API key. (Remember: never check-in your `.env` file with information like your API key!)
+Update this `.env` file with your own API key. (Remember: never check-in your `.env` file with information like your API key!) The easiest way to do this is to open it up in your editor.
 
 Now let's load the environment variable:
 
@@ -108,18 +109,10 @@ Now let's load the environment variable:
 source .env
 ```
 
-## Finishing the Development Environment Setup
-
-This codelab uses some MCP tools, agentic skills, and a React demo application.
-
 I've created a `Makefile` to make it easy for you to setup the environment to launch the demo app. Let's run it to initialise our environment:
 
 ```bash
-# Install dependencies
 make install
-
-# Load environment variables
-source .env
 ```
 
 # Our Demo Application
@@ -147,9 +140,12 @@ make dev
 
 The development server should start very quickly, and the app will be available at `http://localhost:5173`.
 
-# The Challenge of UI Testing
+<img src="media/make-dev.png" alt="Development server running" width="480">
+<br><br>
 
-![A frustrated robot trying to click a submit button that has moved by 1px, with a collapsing house of browser cards in the background](media/ui_testing_challenge.png)
+We can just click on the link to open the application in our browser.
+
+# The Challenge of UI Testing
 
 Traditional UI testing is notoriously difficult to get right and even harder to maintain. Common pain points include:
 
@@ -158,15 +154,17 @@ Traditional UI testing is notoriously difficult to get right and even harder to 
 - **High Learning Curve**: Requiring developers to master complex domain-specific languages and framework-specific quirks (Cypress, Selenium, Playwright) just to automate a basic click.
 - **Environment Parity**: Wrestling with hard-to-replicate application states and the overhead of cleaning up test data.
 
+![A frustrated robot trying to click a submit button that has moved by 1px, with a collapsing house of browser cards in the background](media/ui_testing_challenge.png)
+
 We need a way to test that focuses on **intent** rather than **implementation**.
 
 # MCP to the Rescue
 
-The **Model Context Protocol (MCP)** is an open standard that allows AI models and agents to safely and easily interact with external tools, APIs, and data. Think of it as the universal adapter that allows models and agents to find and execute the tools it has access to.
+The **Model Context Protocol (MCP)** is an open standard that allows AI models and agents to interact with external tools, APIs, and data. Think of it as the universal adapter that allows models and agents to find and execute the tools it has access to.
 
 Traditionally, integrating Large Language Models (LLMs) with external data and tools required developers to write custom, hard-coded API connections for every new data source, creating an unsustainable "M x N" integration problem where every new model and tool multiplies the maintenance burden. The Model Context Protocol (MCP) solves this by removing the need to write specific code to orchestrate these capabilities. Instead of explicitly coding complex execution workflows, developers can rely on the LLM to interpret a user's **natural language** requests and dynamically reason about which tools to use on the fly. 
 
-When a user issues a natural language command (like "Find the latest sales report and email it"), the LLM discovers the available capabilities and generates a structured request to invoke a specific tool. The MCP client acts as a translator, routing this request to the designated MCP server, which executes the action or fetches the data and returns the context to the model. This empowers the AI to act autonomously without the developer having to hard-code the specific execution path.
+When a user issues a natural language command (like "Navigate to `localhost:5173`, login as 'admin', and click the Submit button"), the LLM discovers the available capabilities and generates a structured request to invoke a specific tool. The MCP client acts as a translator, routing this request to the designated MCP server, which executes the action or fetches the data and returns the context to the model. This empowers the AI to act autonomously without the developer having to hard-code the specific execution path.
 
 ![MCP as the universal adapter](media/mcp-adapter.png)
 
@@ -186,7 +184,6 @@ Here are some of its capabilities:
 - It can inspect the DOM.
 - It can click buttons and type text into forms.
 - It can drag-and-drop.
-- It can take screenshots.
 - It can read browser console logs.
 - It's fast: the automation happens locally on your machine.
 
@@ -212,27 +209,29 @@ Next, we need to add the MCP configuration to our client:
   }
 ```
 
-Where do you configure this? Well, that depends on your agent. For example, in Gemini CLI: `~/.gemini/config.json`.
+Where do you configure this? Well, that depends on your agent. For example, in Gemini CLI: `~/.gemini/settings.json`. It will look something like this:
 
-Note that having nodejs installed is a prerequisite for running the MCP server. You can get it from [nodejs.org](https://nodejs.org/en/download).
+<img src="media/editing-settings-json.png" alt="Editing settings.json" width="800">
+<br><br>
 
 ## Testing with BrowserMCP
 
-Now for the magic. First, let's launch Gemini CLI and then run `/mcp` to check that it is properly installed. You should see a list of tools, like this:
+Now for the magic. First, let's launch Gemini CLI (by running `gemini`) in a new terminal session. (Recall the the demo application is running in our initial terminal session.) Inside Gemini CLI, run `/mcp` to check that it is properly installed. You should see a list of tools, like this:
 
-![BrowserMCP](media/browsermcp-tools-geminicli.png)
+<img src="media/browsermcp-tools-geminicli.png" alt=" Testing with BrowserMCP" width="640">
+<br><br>
 
-Then launch the demo app:
+If you didn't start the demo application earlier, launch it now:
 
 ```bash
 make dev
 ```
 
-We need to open the app in our Chrome browser, and connect the BrowserMCP extension in that tab. Follow the link from the `run` command or open `http://localhost:5173` directly in your browser. Then click the BrowserMCP extension icon and click on "Connect".
+We need to open the app in our Chrome browser, and connect the BrowserMCP extension in that tab. Follow the link from the `run` command. Then click the BrowserMCP extension icon and click on "Connect".
 
 ![BrowserMCP](media/connect-browsermcp.png)
 
-Now we can use Gemini CLI to run a test:
+Now we can use Gemini CLI to run a test. Copy and paste this prompt into your Gemini CLI:
 
 ```text
 Using BrowserMCP, connect to the application at http://localhost:5173. If the application is not showing a login screen, first logout. Then login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table.
@@ -246,7 +245,7 @@ Allow Gemini CLI to run all BrowserMCP tools for this session. Then go back to t
 
 A few things to note about the prompt above:
 
-- We start by telling the agent to logout, if the application is already logged in. Note that we don't need to tell the agent to click on "Exit Gateway" to logout. It's smart enough to work out what to click.
+- We start by telling the agent to logout, if the application is already logged in. Note that we don't need to tell the agent to click on specific text like "Exit Gateway". It's smart enough to work out what to click.
 - After logging in and rendering the main page, the agent captures the telemetry information. Again, we don't need to tell the agent to look in specific tiles or match specific words. So if we were to later extend or change the information shown in this page, this prompt will still work and the output will still be captured in our markdown table.
 
 Cool, right?
@@ -261,6 +260,7 @@ BrowserMCP is great, but it has a few limitations. For example:
 
 - It requires an existing browser session, with the BrowserMCP extension connected. (It does not spawn new sessions.)
 - It does not support non-Chromium browsers.
+- It requires a separate browser process to be running that is _on the same machine_ where the MCP server is running.
 - It is not able to work with the local file system. It can't, for example: create local files to evidence screenshots, or download and store files from the web application, such as downloadable PDF.
 - It is non-deterministic. It will attempt to take actions you tell it to perform, but local state, such as an unexpected pop-up, could break the interaction.
 - It does not support "headless" operation, meaning that it can't run in a CI/CD pipeline without a real browser window.
@@ -275,9 +275,9 @@ But with such additional capability comes a much steeper learning curve.
 
 ## Skills
 
-![Kung Fu](media/kung-fu.gif)
-
 Fortunately, we don't have learn how to use Playwright directly. Instead, we can use an **agent skill**. 
+
+![Kung Fu](media/kung-fu.gif)
 
 So, what exactly is an agent skill? Think of it as a tightly packaged bundle of domain expertise that you can hand to your AI agent when it needs to do something specific. It contains instructions, best practices, and sometimes even helper scripts tailored to a particular task. 
 
@@ -308,23 +308,16 @@ npx playwright install-deps # Install dependencies
 playwright install chromium # Install chromium browser in Linux / WSL 
 ```
 
-And now let's add the skill:
+And now let's add the skill. This command will download the skill subfolder directly from GitHub into our Gemini skills folder:
 
 ```bash
-# Tell playwright-cli to install its own skill
-# This installs to ~/.claude/skills/playwright-cli
-playwright-cli install --skills
+mkdir -p ~/.gemini/skills
+npx degit microsoft/playwright-cli/skills/playwright-cli ~/.gemini/skills/playwright-cli
 ```
 
-Note that the skill folder contains a "standard" skill structure. The location installed by the `playwright-cli install --skills` command defaults to a location used by the Claude Code assistant. So let's move it to a more standard location, where it will be found by both Gemini CLI and Antigravity.
+Now we can test it.
 
 ```bash
-# Move the skill to more "standard" location
-mkdir -p ~/.gemini/skills
-
-# Move the playwright-cli skill
-mv ~/.claude/skills/playwright-cli ~/.gemini/skills/
-
 # Launch Playwright CLI with visible browser
 playwright-cli open https://playwright.dev --headed
 ```
@@ -348,17 +341,17 @@ In Gemini CLI:
 /mcp disable browsermcp
 ```
 
-Now let's ask Gemini to navigate our application with Playwright.
+Now let's ask Gemini to navigate to our application with Playwright.
 
-First, as before, we need to launch the application.
+First, as before, we need to launch the application (if it's not already running):
 
 ```bash
 make dev
 ```
 
-But unlike with BrowserMCP, we don't need to fire up the browser first. Playwright will do that for us.
+But unlike with BrowserMCP, we don't need to fire up the browser first. Playwright will do that for us with a local process.
 
-Now enter this prompt into Gemini CLI in a separate terminal:
+Now enter this prompt into Gemini CLI:
 
 ```text
 Using Playwright, connect to the application at http://localhost:5173. Then login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table.
@@ -369,7 +362,7 @@ Using Playwright, connect to the application at http://localhost:5173. Then logi
 What's different here?
 
 - We didn't need to start the browser first.
-- We didn't need to connect an extension.
+- We didn't need to start and connect a browser extension.
 - We don't need to tell the agent to logoff first. The test instantiates from a "clean" session.
 - We're able to take screenshots and save them as local files.
 
@@ -385,7 +378,8 @@ Using Playwright, connect to the application at http://localhost:5173 in **heade
 
 Shortly, Gemini CLI output should look something like this:
 
-![Result of headed execution with Playwright](media/headed-execution.png)
+<img src="media/headed-execution.png" alt=" Result of headed execution with Playwright" width="640">
+<br><br>
 
 How awesome was that?
 
