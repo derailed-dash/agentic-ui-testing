@@ -163,11 +163,16 @@ Because MCP creates a universal standard — often described as the _"USB-C for 
 
 ## What is BrowserMCP?
 
-This is the first tool we're going to play with today. **BrowserMCP** is an MCP server that gives AI agents "eyes" and "hands" it needs to interact with a web browser. It can:
+This is the first tool we're going to play with today. **BrowserMCP** is an MCP server that gives AI agents "eyes" and "hands" it needs to interact with a web browser. In a nutshell, it mimics human interaction with a browser.
 
-- Navigate to URLs.
-- Click buttons and type text.
-- Inspect the DOM.
+![BrowserMCP](media/browser-mcp.png)
+
+Here are some of its capabilities:
+
+- It can navigate to URLs.
+- It can click buttons and type text into forms.
+- It can inspect the DOM.
+- It's fast: the automation happens locally on your machine.
 
 It's open source and you can checkout the GitHub repo [here](https://github.com/BrowserMCP/mcp).
 
