@@ -31,10 +31,10 @@ const LoginPage = ({ onLogin }) => {
 
   return (
     <div className="flex items-center justify-center" style={{ minHeight: '100vh' }}>
-      <div className="glass p-8 animate-fade-in" style={{ width: '100%', maxWidth: '400px' }}>
+      <div className="glass p-8 animate-fade-in text-center" style={{ width: '100%', maxWidth: '400px' }}>
         <div className="text-center mb-8">
           <Shield size={48} color="var(--accent-color)" className="mx-auto" />
-          <h1 className="mt-4">The Dazbo Omni-Dash</h1>
+          <h1 className="mt-4">The Dazbo<br />Omni-Dash</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Secure Terminal Access</p>
         </div>
         

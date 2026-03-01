@@ -175,7 +175,7 @@ Because MCP creates a universal standard — often described as the _"USB-C for 
 
 ## What is BrowserMCP?
 
-This is the first tool we're going to play with today. **BrowserMCP** is an MCP server that gives AI agents "eyes" and "hands" it needs to interact with a web browser. In a nutshell, it mimics human interaction with a browser. It's open source and you can checkout the GitHub repo [here](https://github.com/BrowserMCP/mcp).
+This is the first tool we're going to play with today. **BrowserMCP** is an MCP server that gives AI agents "eyes" and "hands" it needs to interact with a web browser. In a nutshell, it mimics human interaction with a browser. It's open source and you can checkout the GitHub repo [here](https://github.com/BrowserMCP/mcp). See the main [BrowserMCP documentation here](https://docs.browsermcp.io/).
 
 ![BrowserMCP](media/browser-mcp.png)
 
@@ -231,10 +231,10 @@ We need to open the app in our Chrome browser, and connect the BrowserMCP extens
 
 ![BrowserMCP](media/connect-browsermcp.png)
 
-Now we can use the `gemini` CLI to run a test:
+Now we can use Gemini CLI to run a test:
 
 ```text
-Using BrowserMCP, connect to the application at http://localhost:5173, login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'.
+Using BrowserMCP, connect to the application at http://localhost:5173. If the application is not showing a login screen, first logout. Then login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table.
 ```
 
 Gemini CLI might first check that the demo application is running on the specified port. Then it will prompt you to confirm the tool actions it plans to take:
@@ -243,9 +243,56 @@ Gemini CLI might first check that the demo application is running on the specifi
 
 Allow Gemini CLI to run all BrowserMCP tools for this session. Then go back to the browser, and watch the automated interactions take place!
 
-# Automation with Playwright Skill
+A few things to note about the prompt above:
 
-Once you're happy with the manual flow, you might want to bake it into a CI/CD pipeline. We can use a **Playwright Skill** to convert our natural language intent into a robust, repeatable Playwright script.
+- We start by telling the agent to logout, if the application is already logged in. Note that we don't need to tell the agent to click on "Exit Gateway" to logout. It's smart enough to work out what to click.
+- After logging in and rendering the main page, the agent captures the telemetry information. Again, we don't need to tell the agent to look in specific tiles or match specific words. So if we were to later extend or change the information shown in this page, this prompt will still work and the output will still be captured in our markdown table.
+
+Cool, right?
+
+# Automation with Skills and Playwright
+
+## Limitations of BrowserMCP
+
+BrowserMCP is great, but it has a few limitations. For example:
+
+- It requires an existing browser session, with the BrowserMCP extension connected. (It does not spawn new sessions.)
+- It does not support non-Chromium browsers.
+- It is not able to work with the local file system. It can't, for example: create local files to evidence screenshots, or download and store files from the web application, such as downloadable PDF.
+- It is non-deterministic. It will attempt to take actions you tell it to perform, but local state, such as an unexpected pop-up, could break the interaction.
+- It does not support "headless" operation, meaning that it can't run in a CI/CD pipeline without a real browser window.
+
+## Playwright
+
+[Playwright](https://playwright.dev/) is a much more sophisticated tool. It is a well-established, open-source browser automation and testing framework. It can do many things that BrowserMCP cannot, including all of the bullets I mentioned above.
+
+It is much more suited to running complex, reliable, repeatable test scenarios. And it is particularly well-suited to working with long-running sessions, or indeed running multiple independent sessions in parallel.
+
+But with such additional capability comes a much steeper learning curve.
+
+## Skills
+
+![Kung Fu](media/kung-fu.gif)
+
+Fortunately, we don't have learn how to use Playwright directly. Instead, we can use an **agent skill**. 
+
+So, what exactly is an agent skill? Think of it as a tightly packaged bundle of domain expertise that you can hand to your AI agent when it needs to do something specific. It contains instructions, best practices, and sometimes even helper scripts tailored to a particular task. 
+
+Here's the really clever part: **progressive disclosure**. Instead of shoving every conceivable API doc and testing framework rule into the LLM's initial system prompt — which eats up your context window and burns through tokens like nobody's business — the agent only reads the skill when it actually needs it. It keeps the baseline context lean and mean, fetching the detailed "how-to" just-in-time. And yes, a skill can absolutely include instructions on how to leverage specific MCP servers to get the job done.
+
+*Think of it like that scene in The Matrix: The agent looks at a problem, realizes it needs to know Playwright, downloads the skill, and suddenly: "I know kung fu." Boom. Instant expert.*
+
+## Why Skills are Perfect for Playwright
+
+Using a skill here is a great choice. Playwright is incredibly powerful, but its syntax can be tricky. By giving the agent a Playwright skill, we don't have to worry about our LLM hallucinating outdated syntax or writing brittle selectors. We are giving it a curated, authoritative playbook on exactly how to use Playwright properly.
+
+I'm going to make use of [Playwright CLI](https://github.com/microsoft/playwright-cli) and its associated skill.
+
+With this approach we install Playwright CLI locally, and then give our agent the knowledge it needs to make use of it. For the avoidance of any confusion: I'm not installing _any_ Playwright MCP server.
+
+## Installing
+
+tbc
 
 # You Can Do This in Antigravity!
 
