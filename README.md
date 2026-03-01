@@ -9,7 +9,6 @@
 ## Key Links
 
 - [The agentic-ui-testing GitHub repo](https://github.com/derailed-dash/agentic-ui-testing)
-- [Google Codelabs](https://codelabs.developers.google.com/)
 - [This Codelab](https://codelabs.developers.google.com/agentic-ui-testing) - This does not yet exist.
 - [My related blog - Creating an Automated UI Test of Your Web App in Seconds with Gemini CLI and BrowserMCP](https://medium.com/google-cloud/creating-an-automated-ui-test-of-your-web-app-in-seconds-with-gemini-cli-and-browsermcp-09cf4afb8940).
 
