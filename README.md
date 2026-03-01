@@ -8,9 +8,10 @@
 
 ## Key Links
 
-- [My related blog - Creating an Automated UI Test of Your Web App in Seconds with Gemini CLI and BrowserMCP](https://medium.com/google-cloud/creating-an-automated-ui-test-of-your-web-app-in-seconds-with-gemini-cli-and-browsermcp-09cf4afb8940).
+- [The agentic-ui-testing GitHub repo](https://github.com/derailed-dash/agentic-ui-testing)
 - [Google Codelabs](https://codelabs.developers.google.com/)
 - [This Codelab](https://codelabs.developers.google.com/agentic-ui-testing) - This does not yet exist.
+- [My related blog - Creating an Automated UI Test of Your Web App in Seconds with Gemini CLI and BrowserMCP](https://medium.com/google-cloud/creating-an-automated-ui-test-of-your-web-app-in-seconds-with-gemini-cli-and-browsermcp-09cf4afb8940).
 
 # Introduction
 
@@ -26,10 +27,10 @@ In this codelab, we'll explore how to use **Gemini CLI** and multimodal tools li
 
 - ✅ What the Model Context Protocol (MCP) is and why it's a game-changer.
 - ✅ How BrowserMCP enables AI agents to control web browsers.
-- ✅ How to run automated UI tests from the Gemini CLI.
-- ✅ Understanding skills.
-- ✅ Now performing our UI tests with Playwright and a skill.
-- ✅ A quick glimpse of doing this with Antigravity, out-of-the-box.
+- ✅ How to run automated UI tests from Gemini CLI.
+- ✅ Understanding agent skills and their advantages.
+- ✅ Teaching an agent to use Playwright with a skill.
+- ✅ A quick glimpse of the Antigravity Browser Subagent.
 - ✅ Other use cases for browser control.
 
 ## What You'll Do
@@ -37,7 +38,7 @@ In this codelab, we'll explore how to use **Gemini CLI** and multimodal tools li
 1. ✅ Set up your development environment.
 2. ✅ Explore a demo application that needs testing.
 3. ✅ Use Gemini CLI to interact with the application via BrowserMCP.
-4. ✅ Generate a Playwright test script using an AI skill.
+4. ✅ Teach your agent how to use Playwright with an agent skill.
 5. ✅ Antigravity Browser Control demo.
 
 # Prerequisites
@@ -68,7 +69,7 @@ Alternatively, you can create a Google Cloud project from right inside [Google A
 
 ## Clone the Demo Repo
 
-I've created a demo repo on GitHub. It includes a sample application we can use for our UI tewsting. Go ahead and clone it:
+I've created a demo repo on GitHub. It includes a sample application we can use for our UI testing. Go ahead and clone it:
 
 ```bash
 git clone https://github.com/derailed-dash/agentic-ui-testing
@@ -111,7 +112,7 @@ source .env
 
 This codelab uses some MCP tools, agentic skills, and a React demo application.
 
-I've created a `Makefile` to make it easy for you to setup the environment to launch the demo app. Let's run it, and initialise our 
+I've created a `Makefile` to make it easy for you to setup the environment to launch the demo app. Let's run it to initialise our environment:
 
 ```bash
 # Install dependencies
@@ -321,7 +322,7 @@ Note that the skill folder contains a "standard" skill structure. The location i
 # Move the skill to more "standard" location
 mkdir -p ~/.gemini/skills
 
-# MOve the playwright-cli skill
+# Move the playwright-cli skill
 mv ~/.claude/skills/playwright-cli ~/.gemini/skills/
 
 # Launch Playwright CLI with visible browser
@@ -388,25 +389,60 @@ Shortly, Gemini CLI output should look something like this:
 
 How awesome was that?
 
-# You Can Do This in Antigravity!
+# You Can Do This in Antigravity Out of the Box!
 
-The experience you see in the CLI is even more powerful within **Antigravity**, Google's agentic coding assistant. Antigravity integrates these tools directly into your workflow, allowing for even tighter feedback loops.
+Google Antigravity includes the [Browser Subagent](https://antigravity.google/docs/browser-subagent), which provides similar capabilities to Playwright CLI. When you ask Gemini in Antigravity to spin up a URL interactively, it will spin up this subagent automatically. 
+
+This subagent takes your high-level goal (e.g. "Check if the login form works"), visually analyzes the page layout via screenshots and the DOM, and figures out the clicks and keystrokes itself. It's essentially a visual, multimodal AI navigating the web just like a human would. And the best part? It automatically records videos and takes screenshots of everything it does, saving them straight into your local workspace as visual proof of what it accomplished. Antigravity calls this visual evidence [Artifacts](https://antigravity.google/docs/artifacts).
+
+*A note for WSL users: Getting the Browser Agent to work in Antigravity is a bit of headache. I have managed to [get it working](https://medium.com/google-cloud/working-with-google-antigravity-in-wsl-944c96c949f3), but I find the subagent inconsistent and unreliable in this environment. So that's one of the reasons I'm loving Playwright CLI!*
 
 # Other Use Cases for Browser Automation
 
-Browser control isn't just for testing. You can use it for:
-- Data scraping.
-- Automating repetitive web tasks (like filling out expense reports).
-- Web research and summarization.
+Browser automation isn't just about making sure your login button works before a Friday afternoon deployment. Once you realise you can wire an LLM directly to a browser, a whole new world of home-grown, agentic projects opens up.
+
+If you're building your own AI agents, here are a few ways you might use tools like BrowserMCP or Playwright CLI to do the heavy lifting:
+
+- **The Personal Research Assistant:** Imagine pointing your agent at a specific URL and asking it to research a topic, but the site requires logging in and navigating complex menus. Instead of writing a custom web scraper that breaks next week, you just tell your agent to log in, navigate to the data, and summarize it for you.
+- **The "Swivel-Chair" Integrator:** We all have those legacy intranet systems that don't have APIs. You know the ones — where you have to manually copy data from System A, and paste it into a form in System B. An agent with browser automation can act as universal glue, reading the screen of the legacy system and filling out the form in the new one.
+- **Automated Triage and Remediation:** Got a P1 alert from your monitoring system at 3 AM? Your agent could automatically open the specific dashboard URL, read the graphs or logs (using its multimodal vision capabilities), and post a summary directly into your Slack channel, saving you precious minutes during an incident.
+
+The beauty of this approach is that you are no longer limited by what APIs are available. If a human can do it in a browser, your agent can too.
 
 # Conclusion
 
-Congratulations! You've seen how AI agents, powered by MCP and BrowserMCP, can transform the way we think about UI testing.
+Congratulations! You've just built and executed automated, robust UI tests simply by telling an AI agent what you wanted it to do in plain English. No fragile CSS selectors, no complex setup scripts.
 
 You've learned:
-- **UI testing doesn't have to be painful.**
-- **MCP** provides a standardized way for agents to use tools.
-- **BrowserMCP** lets agents interact with the web just like a human.
-- **Gemini CLI and Antigravity** make these capabilities accessible and powerful.
+- **UI testing doesn't have to be painful:** By focusing on the *intent* of the test rather than the fragile DOM implementation, we can vastly reduce maintenance overhead.
+- **The Model Context Protocol (MCP)** gives your agents universal, plug-and-play access to tools, data, and environments.
+- **BrowserMCP** is an incredible tool for bringing agentic capabilities into your local, existing Chrome sessions.
+- **Skills and Playwright CLI** unlock a new level of repeatable, deterministic automation testing — all powered by progressive disclosure.
+- **Antigravity's Browser Subagent** takes it all one step further by introducing autonomous, multimodal navigation and artifact recording straight out of the box.
 
-Now, go forth and automate the boring stuff!
+Now, go forth and automate the boring stuff! 
+
+## Useful Links
+
+If you want to dig deeper into the tools and concepts we covered today, check out these resources:
+
+**Repo Code**
+
+- [The agentic-ui-testing GitHub repo](https://github.com/derailed-dash/agentic-ui-testing)
+
+**Core Tools & Frameworks**
+
+- [BrowserMCP GitHub Repository](https://github.com/BrowserMCP/mcp)
+- [BrowserMCP Documentation](https://docs.browsermcp.io/)
+- [Playwright](https://playwright.dev/)
+- [Google AI Studio](https://aistudio.google.com/)
+
+**Agentic Concepts & Skills**
+
+- [Tutorial: Getting Started with Google Antigravity Skills](https://medium.com/google-cloud/tutorial-getting-started-with-antigravity-skills-864041811e0d) by Romin Irani
+- [Codelab: Getting Started with Antigravity Skills](https://codelabs.developers.google.com/getting-started-with-antigravity-skills)
+- [My Original Blog: Creating an Automated UI Test in Seconds](https://medium.com/google-cloud/creating-an-automated-ui-test-of-your-web-app-in-seconds-with-gemini-cli-and-browsermcp-09cf4afb8940)
+
+**Troubleshooting & Setup**
+
+- [Working with Google Antigravity in WSL](https://medium.com/google-cloud/working-with-google-antigravity-in-wsl-944c96c949f3)
