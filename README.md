@@ -215,7 +215,7 @@ Where do you configure this? Well, that depends on your agent. For example, in G
 
 ## Testing with BrowserMCP
 
-Now for the magic. First, let's launch Gemini CLI (by running `gemini`) in a new terminal session. (Recall the the demo application is running in our initial terminal session.) Inside Gemini CLI, run `/mcp` to check that it is properly installed. You should see a list of tools, like this:
+Now for the magic. First, let's launch Gemini CLI (by running `gemini`) in a new terminal session. (Recall the demo application is running in our initial terminal session.) Inside Gemini CLI, run `/mcp` to check that it is properly installed. You should see a list of tools, like this:
 
 <img src="media/browsermcp-tools-geminicli.png" alt=" Testing with BrowserMCP" width="640">
 <br><br>
@@ -274,7 +274,7 @@ But with such additional capability comes a much steeper learning curve.
 
 ## Skills
 
-Fortunately, we don't have learn how to use Playwright directly. Instead, we can use an **agent skill**. 
+Fortunately, we don't have to learn how to use Playwright directly. Instead, we can use an **agent skill**. 
 
 ![Kung Fu](media/kung-fu.gif)
 
