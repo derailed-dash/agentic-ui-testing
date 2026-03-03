@@ -304,8 +304,7 @@ npm install -g @playwright/cli@latest # Install Playwright CLI globally
 npm install @playwright/test # Install Playwright test framework
 
 npx playwright install-deps # Install dependencies
-npx playwright install chromium # Install Chromium browser in Linux / WSL 
-npx playwright install chrome # Install Chrome in Linux / WSL
+npx playwright install chromium chrome # Install browser binaries in Linux / WSL 
 ```
 
 And now let's add the skill. This command will download the skill subfolder directly from GitHub into our Gemini skills folder:
