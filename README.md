@@ -226,7 +226,7 @@ If you didn't start the demo application earlier, launch it now:
 make dev
 ```
 
-We need to open the app in our Chrome browser, and connect the BrowserMCP extension in that tab. Follow the link from the `run` command. Then click the BrowserMCP extension icon and click on "Connect".
+If you haven't already done so, you need to open the app in your Chrome browser, and connect the BrowserMCP extension in that tab. Follow the link from the `run` command. Then click the BrowserMCP extension icon and click on "Connect".
 
 ![BrowserMCP](media/connect-browsermcp.png)
 
@@ -296,7 +296,7 @@ With this approach we install Playwright CLI locally, and then give our agent th
 
 ## Installing
 
-Let's first install the open source Microsoft Playwright CLI:
+Let's first install the open source Microsoft Playwright CLI. If you haven't already done so, quit Gemini CLI by typing `/quit`. Then, in your terminal:
 
 ```bash
 # Pre-req: nodejs installed
@@ -304,7 +304,8 @@ npm install -g @playwright/cli@latest # Install Playwright CLI globally
 npm install @playwright/test # Install Playwright test framework
 
 npx playwright install-deps # Install dependencies
-playwright install chromium # Install chromium browser in Linux / WSL 
+npx playwright install chromium # Install Chromium browser in Linux / WSL 
+npx playwright install chrome # Install Chrome in Linux / WSL
 ```
 
 And now let's add the skill. This command will download the skill subfolder directly from GitHub into our Gemini skills folder:
@@ -321,7 +322,9 @@ Now we can test it.
 playwright-cli open https://playwright.dev --headed
 ```
 
-I also want Gemini to be able use Playwright in "headed" mode, i.e. with a visible UI. But the skill doesn't tell Gemini how to do that. So I've added these lines to `~/.gemini/skills/playwright-cli/SKILL.md` in the `Core` section:
+This should spawn a browser session, opened to the specified URL.
+
+I also want Gemini to be able to use Playwright in "headed" mode, i.e. with a visible UI. But the skill doesn't tell Gemini how to do that. So I've added these lines to `~/.gemini/skills/playwright-cli/SKILL.md` in the `Core` section:
 
 ```bash
 # Add the following under the "playwright-cli open" command
@@ -332,25 +335,21 @@ playwright-cli open https://playwright.dev --headed
 
 ## Testing with Playwright
 
-Before we continue, let's temporarily disable `BrowserMCP` so that the agent doesn't get confused about which tools to use.
-
-In Gemini CLI:
-
-```bash
-/mcp disable browsermcp
-```
-
-Now let's ask Gemini to navigate to our application with Playwright.
-
-First, as before, we need to launch the application (if it's not already running):
+As before, we need to launch the application (if it's not already running). Do this from the initial terminal session:
 
 ```bash
 make dev
 ```
 
-But unlike with BrowserMCP, we don't need to fire up the browser first. Playwright will do that for us with a local process.
+Then, in the other terminal session, let's temporarily disable BrowserMCP so that the agent doesn't get confused about which tools to use. Relaunch Gemini CLI, and then run:
 
-Now enter this prompt into Gemini CLI:
+```bash
+/mcp disable browsermcp
+```
+
+Now we'll ask Gemini to navigate to our application with Playwright. But unlike with BrowserMCP, we don't need to fire up the browser first. Playwright will do that for us with a local process.
+
+Enter this prompt into Gemini CLI:
 
 ```text
 Using Playwright, connect to the application at http://localhost:5173. Then login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table.
