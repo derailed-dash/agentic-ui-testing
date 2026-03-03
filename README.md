@@ -142,7 +142,7 @@ The development server should start very quickly, and the app will be available 
 <img src="media/make-dev.png" alt="Development server running" width="480">
 <br><br>
 
-We can just click on the link to open the application in our browser.
+We can just click on the link to open the application in our browser. Just leave this process running in your terminal. We'll perform subsequent terminal commands in a separate terminal session.
 
 # The Challenge of UI Testing
 
@@ -193,7 +193,7 @@ To use BrowserMCP, you need to do two things:
 1. Install the BrowserMCP extension into Chrome (or any Chromium-based browser).
 2. Configure the MCP server for your agent.
 
-To install the extension, just follow the instructions [here](https://docs.browsermcp.io/setup-extension). This takes just a few seconds. And once it's installed, you click on "Connect" in the extension to allow your current tab to be controlled by your agent. 
+To install the extension, just follow the instructions [here](https://docs.browsermcp.io/setup-extension). This takes just a few seconds. And once it's installed, you click on "Connect" in the extension to allow your current tab to be controlled by your agent. (Obviously, you want the current tab to be the one where the demo application is running!)
 
 ![BrowserMCP](media/browsermcp-extension.png)
 
