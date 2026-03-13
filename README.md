@@ -53,37 +53,12 @@ This lab assumes that you already have:
 - **Gemini CLI** (which itself depends on [nodejs](https://nodejs.org/))
 - **Git**
 
+To use Gemini CLI, you’ll need to [authenticate with Google](https://geminicli.com/docs/get-started/authentication/#login-google). There are a few ways to do this, but we recommend simply using the "Sign-in with Google" option. This option comes with a generous free quota of Gemini usage, and does not require a Google Cloud project. If you have a Gemini API key, you are free to use this instead. 
+
+
 The instructions assume you're working in a Linux (or WSL) or macOS environment. If you're on Windows (like me), you can follow along using [WSL](https://learn.microsoft.com/en-us/windows/wsl/). 
 
 _(Note that BrowserMCP will not work from Google Cloud Shell, because it will only connect to a local browser running on the same machine.)_
-
-## Create a Google Cloud Project
-
-If you already have a Gemini API key, you can use it and skip this step.
-
-Otherwise, you're going to need a Google Cloud Project to follow along. We won't be deploying any Google Cloud services, but you need the project to associate a Gemini API key. (You need the key to use Gemini.)
-
-If you're familiar with Google Cloud you can create a new project [here](https://console.cloud.google.com/projectcreate). Alternatively, you can create a Google Cloud project from right inside [Google AI Studio](https://aistudio.google.com/). I'll show you how in the next step.
-
-## Create a Gemini API Key for Free
-
-Now you'll create your Gemini API key in [Google AI Studio](https://aistudio.google.com/). Click on "Get API Key".
-
-You'll see something like this:
-
-![Get API Key](media/create-api-key.png)
-
-Here's where your existing keys will be listed, if you have any. Or to create a new key, click on "Create API Key".
-
-<img src="media/create-new-key.png" alt="Create a new API key" width="600">
-<br><br>
-
-Here you can select an existing Google Cloud project, or go ahead and create a new one. Here I've created a new project called `agentic-ui-demo`:
-
-<img src="media/new-project.png" alt="Create a new API key" width="600">
-<br><br>
-
-At this point we have a project and the associated Gemini API key. We haven't enabled billing, so we're limited to the generous free quota. But if you want more quota, you can go ahead and enable billing by clicking on "Set up billing".
 
 ## Setup the Development Environment
 
@@ -92,20 +67,6 @@ I've created a demo repo on GitHub. It includes a sample application we can use 
 ```bash
 git clone https://github.com/derailed-dash/agentic-ui-testing
 cd agentic-ui-testing
-```
-
-Next, make a copy of the sample `.env.template` file, called `.env`. You can do this in your editor, or just run this command:
-
-```bash
-cp .env.template .env
-```
-
-Update this `.env` file with your own API key. (Remember: never check-in your `.env` file with information like your API key!) The easiest way to do this is to open it up in your editor.
-
-Now let's load the environment variable:
-
-```bash
-source .env
 ```
 
 I've created a `Makefile` to make it easy for you to setup the environment to launch the demo app. Let's run it to initialise our environment:
