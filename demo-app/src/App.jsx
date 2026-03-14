@@ -83,33 +83,48 @@ const LoginPage = ({ onLogin }) => {
   );
 };
 
-const DashboardView = () => (
-  <div className="animate-fade-in">
-    <div className="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
-      <div className="glass p-6">
-        <h3 className="mb-2" style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Active Threats</h3>
-        <p style={{ fontSize: '2.5rem', fontWeight: 700 }}>0</p>
-        <div className="flex mt-4 items-center gap-4" style={{ color: 'var(--success-color)', fontSize: '0.875rem' }}>
-          <CheckCircle2 size={16} /> Perimeter Secure
+const DashboardView = () => {
+  const [throughput, setThroughput] = useState('1.20');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Generate a random value between 1.00 and 1.40
+      const value = (Math.random() * 0.4 + 1.0).toFixed(2);
+      setThroughput(value);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const barWidth = `${(parseFloat(throughput) / 1.5) * 100}%`;
+
+  return (
+    <div className="animate-fade-in">
+      <div className="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+        <div className="glass p-6">
+          <h3 className="mb-2" style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Active Threats</h3>
+          <p style={{ fontSize: '2.5rem', fontWeight: 700 }}>0</p>
+          <div className="flex mt-4 items-center gap-4" style={{ color: 'var(--success-color)', fontSize: '0.875rem' }}>
+            <CheckCircle2 size={16} /> Perimeter Secure
+          </div>
         </div>
-      </div>
-      <div className="glass p-6">
-        <h3 className="mb-2" style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase' }}>System Uptime</h3>
-        <p style={{ fontSize: '2.5rem', fontWeight: 700 }}>99.9<span style={{ fontSize: '1rem' }}>%</span></p>
-        <div className="flex mt-4 items-center gap-4" style={{ color: 'var(--accent-color)', fontSize: '0.875rem' }}>
-          <Zap size={16} /> Peak Efficiency
+        <div className="glass p-6">
+          <h3 className="mb-2" style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase' }}>System Uptime</h3>
+          <p style={{ fontSize: '2.5rem', fontWeight: 700 }}>99.9<span style={{ fontSize: '1rem' }}>%</span></p>
+          <div className="flex mt-4 items-center gap-4" style={{ color: 'var(--accent-color)', fontSize: '0.875rem' }}>
+            <Zap size={16} /> Peak Efficiency
+          </div>
         </div>
-      </div>
-      <div className="glass p-6">
-        <h3 className="mb-2" style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Network Throughput</h3>
-        <p style={{ fontSize: '2.5rem', fontWeight: 700 }}>1.2<span style={{ fontSize: '1rem' }}>Gbps</span></p>
-        <div className="mt-4" style={{ height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
-          <div style={{ height: '100%', background: 'var(--accent-color)', width: '65%' }}></div>
+        <div className="glass p-6">
+          <h3 className="mb-2" style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Network Throughput</h3>
+          <p style={{ fontSize: '2.5rem', fontWeight: 700 }}>{throughput}<span style={{ fontSize: '1rem' }}>Gbps</span></p>
+          <div className="mt-4" style={{ height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
+            <div style={{ height: '100%', background: 'var(--accent-color)', width: barWidth, transition: 'width 0.5s ease-out' }}></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const SecurityLogsView = () => (
   <div className="animate-fade-in">
