@@ -158,21 +158,11 @@ To install the extension, just follow the instructions [here](https://docs.brows
 
 ![BrowserMCP](media/browsermcp-extension.png)
 
-Next, we need to add the MCP configuration to our client:
+Next, we need to add the BrowserMCP server configuration to our client. In Gemini CLI this is super-easy because we can just install the pre-packaged [BrowserMCP Gemini CLI Extension](https://github.com/derailed-dash/browsermcp-ext):
 
-```json
-  "mcpServers": {
-    "browsermcp": {
-      "command": "npx",
-      "args": ["@browsermcp/mcp@latest"]
-    }
-  }
+```bash
+gemini extensions install https://github.com/derailed-dash/browsermcp-ext
 ```
-
-Where do you configure this? Well, that depends on your agent. For example, in Gemini CLI: `~/.gemini/settings.json`. It will look something like this:
-
-<img src="media/editing-settings-json.png" alt="Editing settings.json" width="800">
-<br><br>
 
 ## Testing with BrowserMCP
 
@@ -386,6 +376,7 @@ If you want to dig deeper into the tools and concepts we covered today, check ou
 
 - [BrowserMCP GitHub Repository](https://github.com/BrowserMCP/mcp)
 - [BrowserMCP Documentation](https://docs.browsermcp.io/)
+- [BrowserMCP Gemini CLI Extension](https://github.com/derailed-dash/browsermcp-ext)
 - [Playwright](https://playwright.dev/)
 - [Google AI Studio](https://aistudio.google.com/)
 
