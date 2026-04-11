@@ -56,7 +56,6 @@ This lab assumes that you already have:
 
 To use Gemini CLI, you’ll need to [authenticate with Google](https://geminicli.com/docs/get-started/authentication/#login-google). There are a few ways to do this, but we recommend simply using the "Sign-in with Google" option. This option comes with a generous free quota of Gemini usage, and does not require a Google Cloud project. If you have a Gemini API key, you are free to use this instead. 
 
-
 The instructions assume you're working in a Linux (or WSL) or macOS environment. If you're on Windows (like me), you can follow along using [WSL](https://learn.microsoft.com/en-us/windows/wsl/). 
 
 _(Note that BrowserMCP will not work from Google Cloud Shell, because it will only connect to a local browser running on the same machine.)_
