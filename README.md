@@ -9,7 +9,7 @@
 ## Key Links
 
 - [The agentic-ui-testing GitHub repo](https://github.com/derailed-dash/agentic-ui-testing)
-- [This Codelab](https://codelabs.developers.google.com/agentic-ui-testing) - This does not yet exist.
+- [This Codelab](https://codelabs.developers.google.com/agentic-ui-testing)
 - [My related blog - Creating an Automated UI Test of Your Web App in Seconds with Gemini CLI and BrowserMCP](https://medium.com/google-cloud/creating-an-automated-ui-test-of-your-web-app-in-seconds-with-gemini-cli-and-browsermcp-09cf4afb8940).
 
 # Introduction
@@ -50,7 +50,8 @@ This codelab makes use of [Gemini CLI](https://geminicli.com/), MCP tools, agent
 This lab assumes that you already have:
 
 - **Chrome browser**
-- **Gemini CLI** (which itself depends on [nodejs](https://nodejs.org/))
+- **Nodejs**
+- **Gemini CLI**
 - **Git**
 
 To use Gemini CLI, you’ll need to [authenticate with Google](https://geminicli.com/docs/get-started/authentication/#login-google). There are a few ways to do this, but we recommend simply using the "Sign-in with Google" option. This option comes with a generous free quota of Gemini usage, and does not require a Google Cloud project. If you have a Gemini API key, you are free to use this instead. 
@@ -73,6 +74,9 @@ I've created a `Makefile` to make it easy for you to setup the environment to la
 
 ```bash
 make install
+
+# Or if you don't have make
+npm install --prefix demo-app
 ```
 
 # Our Demo Application
@@ -96,6 +100,9 @@ To start the application, simply run:
 
 ```bash
 make dev
+
+# Or if you don't have make
+npm run dev --prefix demo-app
 ```
 
 The development server should start very quickly, and the app will be available at `http://localhost:5173`.
@@ -370,13 +377,13 @@ If you want to dig deeper into the tools and concepts we covered today, check ou
 
 **Repo Code**
 
-- [The agentic-ui-testing GitHub repo](https://github.com/derailed-dash/agentic-ui-testing)
+- [The agentic-ui-testing GitHub repo](https://github.com/derailed-dash/agentic-ui-testing) - Please add a star to the repo if you found this codelab useful!
 
 **Core Tools & Frameworks**
 
 - [BrowserMCP GitHub Repository](https://github.com/BrowserMCP/mcp)
 - [BrowserMCP Documentation](https://docs.browsermcp.io/)
-- [BrowserMCP Gemini CLI Extension](https://github.com/derailed-dash/browsermcp-ext)
+- [BrowserMCP Gemini CLI Extension](https://github.com/derailed-dash/browsermcp-ext) - Please add a star to this repo if you found this extension useful!
 - [Playwright](https://playwright.dev/)
 - [Google AI Studio](https://aistudio.google.com/)
 

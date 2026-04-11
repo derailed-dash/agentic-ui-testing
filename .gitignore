@@ -176,6 +176,7 @@ testem.log
 /typings
 tmp*
 .adk
+.gemini
 
 # System files
 .DS_Store

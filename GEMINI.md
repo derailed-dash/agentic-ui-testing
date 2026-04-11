@@ -8,20 +8,21 @@ It is based on my blog [Creating an Automated UI Test of Your Web App in Seconds
 
 - [My related blog - Creating an Automated UI Test of Your Web App in Seconds with Gemini CLI and BrowserMCP](https://medium.com/google-cloud/creating-an-automated-ui-test-of-your-web-app-in-seconds-with-gemini-cli-and-browsermcp-09cf4afb8940).
 - [Google Codelabs](https://codelabs.developers.google.com/)
-- [This Codelab](https://codelabs.developers.google.com/agentic-ui-testing) - This does not yet exist.
+- [This Codelab](https://codelabs.developers.google.com/agentic-ui-testing)
 
 ## Structure of the Demo / Codelab
 
-1. Intro - overview, what you'll learn, what you'll do.
-2. Pre-reqs and setup - repo, GCP, Gemini API key
-3. The demo application we'll use for testing
-4. Probelm statement: the challenge of creating and running UI tests.
-5. MCP to the rescue - what it is and how we can use it to invoke tools using natural language prompts.
-6. BrowserMCP
-7. Skills and Playwright
-8. Native with Antigravity
-9. Other use cases for browser control.
-10. Wrap-up
+1.  Intro - overview, what you'll learn, what you'll do.
+2.  Pre-reqs and setup - repo, Gemini CLI
+3.  The demo application we'll use for testing
+4.  Probelm statement: the challenge of creating and running UI tests.
+5.  MCP to the rescue - what it is and how we can use it to invoke tools using natural language prompts.
+6.  BrowserMCP
+7.  Skills and Playwright
+8.  Using Chrome DevTools
+9.  Native with Antigravity
+10. Other use cases for browser control.
+11. Wrap-up
 
 ## Rules and Guidance
 
