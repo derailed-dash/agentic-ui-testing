@@ -327,7 +327,7 @@ Note that you'll see the tool calls executing in Gemini CLI, but you won't see t
 But if you re-run with this amended prompt, you'll be able to see the UI too:
 
 ```text
-Using Playwright, connect to the application at http://localhost:5173 in **headed** mode, and keep the browser open when you're done. Login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table.
+Using Playwright, connect to the application at http://localhost:5173 in **headed** mode, and keep the browser open when you're done. Login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown and record them. Then wait 3 seconds, read them again. Now present the data back to me in a markdown table.
 ```
 
 Shortly, Gemini CLI output should look something like this:
@@ -336,6 +336,79 @@ Shortly, Gemini CLI output should look something like this:
 <br><br>
 
 How awesome was that?
+
+# But Wait, There's Also Chrome DevTools MCP!
+
+Chrome DevTools is a set of web developer tools built into the Chrome browser, intended for web development and debugging. It's been around a long time. You know... the console you can interact with when you open More Tools -> Developer Tools in Chrome.
+
+But now it has its own [MCP server](https://github.com/ChromeDevTools/chrome-devtools-mcp), which didn't exist when I first blogged about browser automation from Gemini CLI last year. But now, you can do everything you can do with BrowserMCP and most of the things you can do with Playwright, without installing anything into your browser, and without installing a local CLI.
+
+Let's give it a go!
+
+Normally, I work in the WSL environment, but I couldn't get the Chrome DevTools MCP server to talk to my browser in this environment. So, for this part lab, let's use Google Cloud Shell in the [Google Cloud Console](https://console.cloud.google.com/). Yes, it is possible to use this in Cloud Shell!
+
+Open the console and open a Cloud Shell session. From there:
+
+```bash
+# Clone the sample app - like we did before
+git clone https://github.com/derailed-dash/agentic-ui-testing
+cd agentic-ui-testing
+
+# Build the application - like we did before
+make install
+
+# Install the Chrome DevTools MCP server Gemini CLI Extension
+gemini extensions install https://github.com/ChromeDevTools/chrome-devtools-mcp
+```
+
+Now we need to install a Chrome executable into Cloud Shell:
+
+```bash
+# Get the latest executable for Ubuntu
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+# Install it
+sudo apt install ./google-chrome-stable_current_amd64.deb -y
+
+# Check it and get the executable path
+which google-chrome
+
+# Cleanup
+rm google-chrome-stable_current_amd64.deb
+```
+
+Now, one final step: we need to tell the Chrome DevTools MCP server where to find the Chrome executable. We can do this by setting the `executable-path` option in the MCP server configuration and making it `headless`. We do this by editing the file `~/.gemini/extensions/chrome-devtools-mcp/gemini-extension.json`:
+
+```json
+{
+  "name": "chrome-devtools-mcp",
+  "version": "latest",
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--executable-path=/usr/bin/google-chrome",
+        "--headless"
+      ]
+    }
+  }
+}
+```
+
+Great! We should be good to go. Launch `gemini` from the Cloud Shell, and check the MCP server is running, by using the command `/mcp list`, like before.
+
+Finally, we're ready to test it with a prompt. 
+
+Let's do it a bit differently. This time, we'll tell Gemini CLI to actually launch the demo application and connect to it:
+
+_Launch my demo application with `make dev`. Then, using Using Chrome DevTools MCP, connect to the application at  the exposed localhost URL. Login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table._
+
+A few seconds later, Gemini CLI should present the results in the table, and will have saved the screenshot. You can go ahead and download the screenshot from Cloud Shell, to check it looks okay.
+
+<img src="media/cloud-shell-success.png" alt="Success in Cloud Shell" width="640">
+<br><br>
 
 # You Can Do This in Antigravity Out of the Box!
 
@@ -385,6 +458,8 @@ If you want to dig deeper into the tools and concepts we covered today, check ou
 - [BrowserMCP Gemini CLI Extension](https://github.com/derailed-dash/browsermcp-ext) - Please add a star to this repo if you found this extension useful!
 - [Playwright](https://playwright.dev/)
 - [Google AI Studio](https://aistudio.google.com/)
+- [Chrome DevTools](https://developer.chrome.com/docs/devtools)
+- [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp)
 
 **Agentic Concepts & Skills**
 
