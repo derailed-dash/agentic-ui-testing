@@ -29,6 +29,7 @@ In this codelab, we'll explore how to use **Gemini CLI** and multimodal tools li
 - ✅ How to run automated UI tests from Gemini CLI.
 - ✅ Understanding agent skills and their advantages.
 - ✅ Teaching an agent to use Playwright with a skill.
+- ✅ Leveraging the Google Chrome DevTools MCP and skill together.
 - ✅ A quick glimpse of the Antigravity Browser Subagent.
 - ✅ Other use cases for browser control.
 
@@ -69,7 +70,7 @@ git clone https://github.com/derailed-dash/agentic-ui-testing
 cd agentic-ui-testing
 ```
 
-I've created a `Makefile` to make it easy for you to setup the environment to launch the demo app. Let's run it to initialise our environment:
+There's a `Makefile` to make it easy for you to setup the environment to launch the demo app. Let's run it to initialise our environment:
 
 ```bash
 make install
@@ -345,7 +346,7 @@ But now it has its own [MCP server](https://github.com/ChromeDevTools/chrome-dev
 
 Let's give it a go!
 
-Normally, I work in the WSL environment, but I couldn't get the Chrome DevTools MCP server to talk to my browser in this environment. So, for this part lab, let's use Google Cloud Shell in the [Google Cloud Console](https://console.cloud.google.com/). Yes, it is possible to use this in Cloud Shell!
+Normally, I work in the WSL environment, but I couldn't get the Chrome DevTools MCP server to talk to my browser in this environment. So, for this part, let's use Google Cloud Shell in the [Google Cloud Console](https://console.cloud.google.com/). Yes, it is possible to use this in Cloud Shell!
 
 Open the console and open a Cloud Shell session. From there:
 
@@ -377,7 +378,7 @@ which google-chrome
 rm google-chrome-stable_current_amd64.deb
 ```
 
-Now, one final step: we need to tell the Chrome DevTools MCP server where to find the Chrome executable. We can do this by setting the `executable-path` option in the MCP server configuration and making it `headless`. We do this by editing the file `~/.gemini/extensions/chrome-devtools-mcp/gemini-extension.json`:
+One final step: we need to tell the Chrome DevTools MCP server where to find the Chrome executable. We can do this by setting the `executable-path` option in the MCP server configuration and making it `headless`. We do this by editing the file `~/.gemini/extensions/chrome-devtools-mcp/gemini-extension.json`:
 
 ```json
 {
