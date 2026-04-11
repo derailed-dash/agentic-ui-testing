@@ -405,6 +405,8 @@ Let's do it a bit differently. This time, we'll tell Gemini CLI to actually laun
 
 _Launch my demo application with `make dev`. Then, using Using Chrome DevTools MCP, connect to the application at  the exposed localhost URL. Login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table._
 
+As usual, you'll be prompted to allow the MCP server to run. But you'll also notice it tries to activate a skill. That's right: this extension contains both the MCP server, and a skill that guides the agent on how best to use the MCP server. Nice!
+
 A few seconds later, Gemini CLI should present the results in the table, and will have saved the screenshot. You can go ahead and download the screenshot from Cloud Shell, to check it looks okay.
 
 <img src="media/cloud-shell-success.png" alt="Success in Cloud Shell" width="640">
