@@ -1,4 +1,4 @@
-# Google Developer Codelab: Automated UI Testing with Gemini CLI and BrowserMCP, and Playwright
+# Google Developer Codelab: Automated UI Testing with Antigravity (Agy) CLI, BrowserMCP, and Playwright
 
 # About this Repo
 
@@ -20,13 +20,13 @@ But what if you could just *tell* an agent what to test in natural language, and
 
 ![Traditional testing chaos vs Agentic testing magic](media/agentic_testing_magic.png)
 
-In this codelab, we'll explore how to use **Gemini CLI** and multimodal tools like **BrowserMCP**. You'll see how to create and run automated UI tests using natural language.
+In this codelab, we'll explore how to use **Antigravity CLI** and multimodal tools like **BrowserMCP**. You'll see how to create and run automated UI tests using natural language.
 
 ## What You'll Learn
 
 - ✅ What the Model Context Protocol (MCP) is and why it's a game-changer.
 - ✅ How BrowserMCP enables AI agents to control web browsers.
-- ✅ How to run automated UI tests from Gemini CLI.
+- ✅ How to run automated UI tests from Antigravity CLI.
 - ✅ Understanding agent skills and their advantages.
 - ✅ Teaching an agent to use Playwright with a skill.
 - ✅ Leveraging the Google Chrome DevTools MCP and skill together.
@@ -37,14 +37,14 @@ In this codelab, we'll explore how to use **Gemini CLI** and multimodal tools li
 
 1. ✅ Set up your development environment.
 2. ✅ Explore a demo application that needs testing.
-3. ✅ Use Gemini CLI to interact with the application via BrowserMCP.
+3. ✅ Use Antigravity (Agy) CLI to interact with the application via BrowserMCP.
 4. ✅ Teach your agent how to use Playwright with an agent skill.
 
 # Prerequisites
 
 Before we dive into the cool stuff, let's make sure you have everything you need. 
 
-This codelab makes use of [Gemini CLI](https://geminicli.com/), MCP tools, agent skills, and a React demo application.
+This codelab makes use of the **Antigravity CLI**, MCP tools, agent skills, and a React demo application.
 
 ## Tools
 
@@ -52,10 +52,10 @@ This lab assumes that you already have:
 
 - **Chrome browser**
 - **Nodejs**
-- **Gemini CLI**
+- **Antigravity CLI**
 - **Git**
 
-To use Gemini CLI, you’ll need to [authenticate with Google](https://geminicli.com/docs/get-started/authentication/#login-google). There are a few ways to do this, but we recommend simply using the "Sign-in with Google" option. This option comes with a generous free quota of Gemini usage, and does not require a Google Cloud project. If you have a Gemini API key, you are free to use this instead. 
+To use Antigravity (Agy) CLI, you’ll need to authenticate with Google. When you first launch `agy`, it will attempt to use your system's native secure keyring (e.g., Keychain, Windows Credential Manager). If no session is found, it will automatically prompt you for Google Sign-In via your default web browser. This option comes with a generous free quota of Gemini usage and does not require a Google Cloud project. If you have a Gemini API key or Google Cloud project, you are free to configure this as well. 
 
 The instructions assume you're working in a Linux (or WSL) or macOS environment. If you're on Windows (like me), you can follow along using [WSL](https://learn.microsoft.com/en-us/windows/wsl/). 
 
@@ -159,24 +159,35 @@ Here are some of its capabilities:
 To use BrowserMCP, you need to do two things:
 
 1. Install the BrowserMCP extension into Chrome (or any Chromium-based browser).
-2. Configure the MCP server for your agent.
+2. Configure the MCP server manually in your Antigravity configuration.
 
-To install the extension, just follow the instructions [here](https://docs.browsermcp.io/setup-extension). This takes just a few seconds. And once it's installed, you click on "Connect" in the extension to allow your current tab to be controlled by your agent. (Obviously, you want the current tab to be the one where the demo application is running!)
+To install the extension, just follow the instructions [here](https://docs.browsermcp.io/setup-extension). This takes just a few seconds. Once it's installed, you click on "Connect" in the extension to allow your current tab to be controlled by your agent. (Obviously, you want the current tab to be the one where the demo application is running!)
 
-![BrowserMCP](media/browsermcp-extension.png)
+Second, because extensions are not supported in the new Antigravity (Agy) CLI, we configure the MCP server manually. We do this by adding the `browsermcp` server definition to our global `mcp_config.json` file.
 
-Next, we need to add the BrowserMCP server configuration to our client. In Gemini CLI this is super-easy because we can just install the pre-packaged [BrowserMCP Gemini CLI Extension](https://github.com/derailed-dash/browsermcp-ext):
+Create or edit the file `~/.gemini/config/mcp_config.json` and add the following configuration:
 
-```bash
-gemini extensions install https://github.com/derailed-dash/browsermcp-ext
+```json
+{
+  "mcpServers": {
+    "browsermcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@browsermcp/mcp@latest"
+      ]
+    }
+  }
+}
 ```
+
+For a detailed walkthrough on setting up MCP servers and skills in the Antigravity ecosystem, see these resources:
+- [Configuring MCP Servers and Skills for Antigravity CLI and IDE](https://medium.com/google-cloud/configuring-mcp-servers-and-skills-for-antigravity-cli-and-ide-a938c7eebb78)
+- [Dialling Our Agents to 11: My Favourite MCP Servers](https://medium.com/google-cloud/dialling-our-agents-to-11-my-favourite-mcp-servers-9549c1442a5e)
 
 ## Testing with BrowserMCP
 
-Now for the magic. First, let's launch Gemini CLI (by running `gemini`) in a new terminal session. (Recall the demo application is running in our initial terminal session.) Inside Gemini CLI, run `/mcp` to check that it is properly installed. You should see a list of tools, like this:
-
-<img src="media/browsermcp-tools-geminicli.png" alt=" Testing with BrowserMCP" width="640">
-<br><br>
+Now for the magic. First, let's launch Antigravity CLI (by running `agy`) in a new terminal session. (Recall the demo application is running in our initial terminal session.) Inside the interactive TUI, type `/mcp` to verify the list of active tools and ensure `browsermcp` is available.
 
 If you didn't start the demo application earlier, launch it now:
 
@@ -188,17 +199,13 @@ If you haven't already done so, you need to open the app in your Chrome browser,
 
 ![BrowserMCP](media/connect-browsermcp.png)
 
-Now we can use Gemini CLI to run a test. Copy and paste this prompt into your Gemini CLI:
+Now we can use the Agy CLI to run a test. Copy and paste this prompt into the CLI:
 
 ```text
 Using BrowserMCP, connect to the application at http://localhost:5173. If the application is not showing a login screen, first logout. Then login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table.
 ```
 
-Gemini CLI might first check that the demo application is running on the specified port. Then it will prompt you to confirm the tool actions it plans to take:
-
-![BrowserMCP](media/browsermcp-browser-navigate-action.png)
-
-Allow Gemini CLI to run all BrowserMCP tools for this session. Then go back to the browser, and watch the automated interactions take place!
+The CLI might first check that the demo application is running on the specified port. Then it will prompt you to confirm the tool actions it plans to take. Allow the CLI to run all BrowserMCP tools for this session. Then go back to the browser, and watch the automated interactions take place!
 
 A few things to note about the prompt above:
 
@@ -254,7 +261,7 @@ With this approach we install Playwright CLI locally, and then give our agent th
 
 ## Installing
 
-Let's first install the open source Microsoft Playwright CLI. If you haven't already done so, quit Gemini CLI by typing `/quit`. Then, in your terminal:
+Let's first install the open source Microsoft Playwright CLI. If you are currently in an active `agy` session, exit the interactive CLI (by typing `/quit` or Ctrl+D). Then, in your terminal:
 
 ```bash
 # Pre-req: nodejs installed
@@ -265,7 +272,7 @@ npx playwright install-deps # Install dependencies
 npx playwright install chromium chrome # Install browser binaries in Linux / WSL 
 ```
 
-And now let's add the skill. This command will download the skill subfolder directly from GitHub into our Gemini skills folder:
+And now let's add the skill. This command will download the skill subfolder directly from GitHub into our shared Antigravity skills folder:
 
 ```bash
 mkdir -p ~/.gemini/skills
@@ -281,7 +288,7 @@ playwright-cli open https://playwright.dev --headed
 
 This should spawn a browser session, opened to the specified URL.
 
-I also want Gemini to be able to use Playwright in "headed" mode, i.e. with a visible UI. But the skill doesn't tell Gemini how to do that. So I've added these lines to `~/.gemini/skills/playwright-cli/SKILL.md` in the `Core` section:
+I also want our agent to be able to use Playwright in "headed" mode, i.e. with a visible UI. But the skill doesn't tell the agent how to do that. So I've added these lines to `~/.gemini/skills/playwright-cli/SKILL.md` in the `Core` section:
 
 ```bash
 # Add the following under the "playwright-cli open" command
@@ -298,21 +305,21 @@ As before, we need to launch the application (if it's not already running). Do t
 make dev
 ```
 
-Then, in the other terminal session, let's temporarily disable BrowserMCP so that the agent doesn't get confused about which tools to use. Relaunch Gemini CLI, and then run:
+Then, in the other terminal session, let's temporarily disable BrowserMCP so that the agent doesn't get confused about which tools to use. Relaunch the Antigravity CLI (`agy`). We can temporarily disable the `browsermcp` server directly via the TUI:
 
-```bash
-/mcp disable browsermcp
-```
+1. Type `/mcp` inside the prompt box to open the MCP management panel.
+2. Use the arrow keys (up/down) to select `browsermcp` and press **Enter/Return**.
+3. Move right to select **Disable** and press Enter to toggle it off.
 
-Now we'll ask Gemini to navigate to our application with Playwright. But unlike with BrowserMCP, we don't need to fire up the browser first. Playwright will do that for us with a local process.
+Now we'll ask the agent to navigate to our application with Playwright. But unlike with BrowserMCP, we don't need to fire up the browser first. Playwright will do that for us with a local process.
 
-Enter this prompt into Gemini CLI:
+Enter this prompt into the Agy CLI:
 
 ```text
 Using Playwright, connect to the application at http://localhost:5173. Then login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table.
 ```
 
-(As always, Gemini CLI will ask for permission before running any tools.)
+(As always, the CLI will ask for permission before running any tools.)
 
 What's different here?
 
@@ -323,7 +330,7 @@ What's different here?
 
 Shortly after you should see a `dashboard.png` file in the `output` folder.
 
-Note that you'll see the tool calls executing in Gemini CLI, but you won't see the browser UI. That's because Playwright runs in "headless mode" by default.
+Note that you'll see the tool calls executing in the Agy CLI, but you won't see the browser UI. That's because Playwright runs in "headless mode" by default.
 
 But if you re-run with this amended prompt, you'll be able to see the UI too:
 
@@ -331,7 +338,7 @@ But if you re-run with this amended prompt, you'll be able to see the UI too:
 Using Playwright, connect to the application at http://localhost:5173 in **headed** mode, and keep the browser open when you're done. Login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown and record them. Then wait 3 seconds, read them again. Now present the data back to me in a markdown table.
 ```
 
-Shortly, Gemini CLI output should look something like this:
+Shortly, the Agy CLI output should look something like this:
 
 <img src="media/headed-execution.png" alt=" Result of headed execution with Playwright" width="640">
 <br><br>
@@ -342,7 +349,7 @@ How awesome was that?
 
 Chrome DevTools is a set of web developer tools built into the Chrome browser, intended for web development and debugging. It's been around a long time. You know... the console you can interact with when you open More Tools -> Developer Tools in Chrome.
 
-But now it has its own [MCP server](https://github.com/ChromeDevTools/chrome-devtools-mcp), which didn't exist when I first blogged about browser automation from Gemini CLI last year. But now, you can do everything you can do with BrowserMCP and most of the things you can do with Playwright, without installing anything into your browser, and without installing a local CLI.
+But now it has its own [MCP server](https://github.com/ChromeDevTools/chrome-devtools-mcp), which didn't exist when I first blogged about browser automation last year. But now, you can do everything you can do with BrowserMCP and most of the things you can do with Playwright, without installing anything into your browser, and without installing a local CLI.
 
 Let's give it a go!
 
@@ -358,8 +365,11 @@ cd agentic-ui-testing
 # Build the application - like we did before
 make install
 
-# Install the Chrome DevTools MCP server Gemini CLI Extension
-gemini extensions install https://github.com/ChromeDevTools/chrome-devtools-mcp
+# Install the Antigravity CLI (agy)
+curl -fsSL https://antigravity.google/cli/install.sh | bash
+
+# Ensure the agy binary is in your PATH
+export PATH=$PATH:$HOME/.local/bin
 ```
 
 Now we need to install a Chrome executable into Cloud Shell:
@@ -378,13 +388,18 @@ which google-chrome
 rm google-chrome-stable_current_amd64.deb
 ```
 
-One final step: we need to tell the Chrome DevTools MCP server where to find the Chrome executable. We can do this by setting the `executable-path` option in the MCP server configuration and making it `headless`. We do this by editing the file `~/.gemini/extensions/chrome-devtools-mcp/gemini-extension.json`:
+One final step: we need to configure the Chrome DevTools MCP server and tell it where to find the Chrome executable. We do this by adding the configuration directly into our global `~/.gemini/config/mcp_config.json` file (create the folder first with `mkdir -p ~/.gemini/config` if it doesn't exist):
 
 ```json
 {
-  "name": "chrome-devtools-mcp",
-  "version": "latest",
   "mcpServers": {
+    "browsermcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@browsermcp/mcp@latest"
+      ]
+    },
     "chrome-devtools": {
       "command": "npx",
       "args": [
@@ -398,24 +413,22 @@ One final step: we need to tell the Chrome DevTools MCP server where to find the
 }
 ```
 
-Great! We should be good to go. Launch `gemini` from the Cloud Shell, and check the MCP server is running, by using the command `/mcp list`, like before.
+Great! We should be good to go. Launch `agy` from the Cloud Shell, and check that the MCP server is running by typing `/mcp` inside the CLI, like before.
 
 Finally, we're ready to test it with a prompt. 
 
-Let's do it a bit differently. This time, we'll tell Gemini CLI to actually launch the demo application and connect to it:
+Let's do it a bit differently. This time, we'll tell Agy CLI to actually launch the demo application and connect to it:
 
-_Launch my demo application with `make dev`. Then, using Using Chrome DevTools MCP, connect to the application at  the exposed localhost URL. Login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table._
+_Launch my demo application with `make dev`. Then, using Chrome DevTools MCP, connect to the application at the exposed localhost URL. Login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table._
 
-As usual, you'll be prompted to allow the MCP server to run. But you'll also notice it tries to activate a skill. That's right: this extension contains both the MCP server, and a skill that guides the agent on how best to use the MCP server. Nice!
-
-A few seconds later, Gemini CLI should present the results in the table, and will have saved the screenshot. You can go ahead and download the screenshot from Cloud Shell, to check it looks okay.
+As usual, you'll be prompted to allow the MCP server to run. A few seconds later, Agy CLI should present the results in the table, and will have saved the screenshot. You can go ahead and download the screenshot from Cloud Shell, to check it looks okay.
 
 <img src="media/cloud-shell-success.png" alt="Success in Cloud Shell" width="640">
 <br><br>
 
 # You Can Do This in Antigravity Out of the Box!
 
-Google Antigravity includes the [Browser Subagent](https://antigravity.google/docs/browser-subagent), which provides similar capabilities to Playwright CLI. When you ask Gemini in Antigravity to spin up a URL interactively, it will spin up this subagent automatically. 
+Google Antigravity includes the [Browser Subagent](https://antigravity.google/docs/browser-subagent), which provides similar capabilities to Playwright CLI. When you ask the agent in Antigravity to spin up a URL interactively, it will spin up this subagent automatically. 
 
 This subagent takes your high-level goal (e.g. "Check if the login form works"), visually analyzes the page layout via screenshots and the DOM, and figures out the clicks and keystrokes itself. It's essentially a visual, multimodal AI navigating the web just like a human would. And the best part? It automatically records videos and takes screenshots of everything it does, saving them straight into your local workspace as visual proof of what it accomplished. Antigravity calls this visual evidence [Artifacts](https://antigravity.google/docs/artifacts).
 
@@ -430,8 +443,6 @@ If you're building your own AI agents, here are a few ways you might use tools l
 - **The Personal Research Assistant:** Imagine pointing your agent at a specific URL and asking it to research a topic, but the site requires logging in and navigating complex menus. Instead of writing a custom web scraper that breaks next week, you just tell your agent to log in, navigate to the data, and summarize it for you.
 - **The "Swivel-Chair" Integrator:** We all have those legacy intranet systems that don't have APIs. You know the ones — where you have to manually copy data from System A, and paste it into a form in System B. An agent with browser automation can act as universal glue, reading the screen of the legacy system and filling out the form in the new one.
 - **Automated Triage and Remediation:** Got a P1 alert from your monitoring system at 3 AM? Your agent could automatically open the specific dashboard URL, read the graphs or logs (using its multimodal vision capabilities), and post a summary directly into your Slack channel, saving you precious minutes during an incident.
-
-The beauty of this approach is that you are no longer limited by what APIs are available. If a human can do it in a browser, your agent can too.
 
 # Conclusion
 
@@ -458,7 +469,6 @@ If you want to dig deeper into the tools and concepts we covered today, check ou
 
 - [BrowserMCP GitHub Repository](https://github.com/BrowserMCP/mcp)
 - [BrowserMCP Documentation](https://docs.browsermcp.io/)
-- [BrowserMCP Gemini CLI Extension](https://github.com/derailed-dash/browsermcp-ext) - Please add a star to this repo if you found this extension useful!
 - [Playwright](https://playwright.dev/)
 - [Google AI Studio](https://aistudio.google.com/)
 - [Chrome DevTools](https://developer.chrome.com/docs/devtools)
@@ -466,6 +476,8 @@ If you want to dig deeper into the tools and concepts we covered today, check ou
 
 **Agentic Concepts & Skills**
 
+- [Configuring MCP Servers and Skills for Antigravity CLI and IDE](https://medium.com/google-cloud/configuring-mcp-servers-and-skills-for-antigravity-cli-and-ide-a938c7eebb78)
+- [Dialling Our Agents to 11: My Favourite MCP Servers](https://medium.com/google-cloud/dialling-our-agents-to-11-my-favourite-mcp-servers-9549c1442a5e)
 - [Tutorial: Getting Started with Google Antigravity Skills](https://medium.com/google-cloud/tutorial-getting-started-with-antigravity-skills-864041811e0d) by Romin Irani
 - [Codelab: Getting Started with Antigravity Skills](https://codelabs.developers.google.com/getting-started-with-antigravity-skills)
 - [My Original Blog: Creating an Automated UI Test in Seconds](https://medium.com/google-cloud/creating-an-automated-ui-test-of-your-web-app-in-seconds-with-gemini-cli-and-browsermcp-09cf4afb8940)
