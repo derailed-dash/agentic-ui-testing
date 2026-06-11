@@ -311,6 +311,8 @@ Then, in the other terminal session, let's temporarily disable BrowserMCP so tha
 2. Use the arrow keys (up/down) to select `browsermcp` and press **Enter/Return**.
 3. Move right to select **Disable** and press Enter to toggle it off.
 
+![Disabling BrowserMCP in Agy CLI TUI](media/disable-mcp-server.png)
+
 Now we'll ask the agent to navigate to our application with Playwright. But unlike with BrowserMCP, we don't need to fire up the browser first. Playwright will do that for us with a local process.
 
 Enter this prompt into the Agy CLI:
