@@ -9,7 +9,7 @@
 ## Key Links
 
 - [The agentic-ui-testing GitHub repo](https://github.com/derailed-dash/agentic-ui-testing)
-- [This Codelab](https://codelabs.developers.google.com/agentic-ui-testing)
+- [This Codelab](https://codelabs.developers.google.com/agentic-ui-testing-with-antigravity-cli)
 - [My related blog - Creating an Automated UI Test of Your Web App in Seconds with Gemini CLI and BrowserMCP](https://medium.com/google-cloud/creating-an-automated-ui-test-of-your-web-app-in-seconds-with-gemini-cli-and-browsermcp-09cf4afb8940).
 
 # Introduction
@@ -37,7 +37,7 @@ In this codelab, we'll explore how to use **Antigravity CLI** and multimodal too
 
 1. ✅ Set up your development environment.
 2. ✅ Explore a demo application that needs testing.
-3. ✅ Use Antigravity (Agy) CLI to interact with the application via BrowserMCP.
+3. ✅ Use Antigravity CLI to interact with the application via BrowserMCP.
 4. ✅ Teach your agent how to use Playwright with an agent skill.
 
 # Prerequisites
@@ -55,7 +55,7 @@ This lab assumes that you already have:
 - **Antigravity CLI**
 - **Git**
 
-To use Antigravity (Agy) CLI, you’ll need to authenticate with Google. When you first launch `agy`, it will attempt to use your system's native secure keyring (e.g., Keychain, Windows Credential Manager). If no session is found, it will automatically prompt you for Google Sign-In via your default web browser. This option comes with a generous free quota of Gemini usage and does not require a Google Cloud project. If you have a Gemini API key or Google Cloud project, you are free to configure this as well. 
+To use Antigravity CLI, you’ll need to authenticate with Google. When you first launch `agy`, it will automatically prompt you for Google Sign-In via your default web browser. This option comes with a generous free quota of Gemini usage and does not require a Google Cloud project. If you have a Gemini API key or Google Cloud project, you are free to configure this as well. 
 
 The instructions assume you're working in a Linux (or WSL) or macOS environment. If you're on Windows (like me), you can follow along using [WSL](https://learn.microsoft.com/en-us/windows/wsl/). 
 
@@ -163,7 +163,7 @@ To use BrowserMCP, you need to do two things:
 
 To install the extension, just follow the instructions [here](https://docs.browsermcp.io/setup-extension). This takes just a few seconds. Once it's installed, you click on "Connect" in the extension to allow your current tab to be controlled by your agent. (Obviously, you want the current tab to be the one where the demo application is running!)
 
-Second, because extensions are not supported in the new Antigravity (Agy) CLI, we configure the MCP server manually. We do this by adding the `browsermcp` server definition to our global `mcp_config.json` file.
+Next, we configure the actual MCP server in Antigravity. We do this by adding the `browsermcp` server definition to our global `mcp_config.json` file.
 
 Create or edit the file `~/.gemini/config/mcp_config.json` and add the following configuration:
 
@@ -421,7 +421,7 @@ Finally, we're ready to test it with a prompt.
 
 Let's do it a bit differently. This time, we'll tell Agy CLI to actually launch the demo application and connect to it:
 
-_Launch my demo application with `make dev`. Then, using Chrome DevTools MCP, connect to the application at the exposed localhost URL. Login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table._
+_Launch my demo application with `make dev`. Then, use your built-in browser agent to connect to the application at the exposed localhost URL. Login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table._
 
 As usual, you'll be prompted to allow the MCP server to run. A few seconds later, Agy CLI should present the results in the table, and will have saved the screenshot. You can go ahead and download the screenshot from Cloud Shell, to check it looks okay.
 
