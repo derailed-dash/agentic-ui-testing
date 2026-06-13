@@ -1,4 +1,4 @@
-# Google Developer Codelab: Automated UI Testing with Antigravity (Agy) CLI, BrowserMCP, and Playwright
+# Google Developer Codelab: Automated UI Testing with Antigravity (Agy) CLI, BrowserMCP, Playwright, and the Browser Agent
 
 # About this Repo
 
