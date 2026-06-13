@@ -22,11 +22,11 @@ One area ripe for this agentic transformation is web application testing. Tradit
 
 In this codelab, we'll explore how to use **Antigravity CLI** along with agent skills, and multimodal MCP tools like **BrowserMCP**. You'll see how to create and run automated UI tests using natural language, showing how agentic tools can handle complex tasks and give you superpowers as a builder.
 
-Crucially, whilst this codelab focuses on the specific use cases of UI automation and browser remote control, it is the underlying principles and the massive world of possibilities they unlock that are truly important. By teaching agents to use local CLIs, external MCP servers, and APIs, we can delegate complex workflows that we wouldn't otherwise have the time or specialised expertise to handle ourselves.
+Crucially, whilst this codelab focuses on the specific use cases of UI automation and browser remote control, it is the underlying principles and the massive world of possibilities they unlock that are truly important. By teaching agents to use local CLIs and MCP servers, we can delegate complex workflows that we wouldn't otherwise have the time or specialised expertise to handle ourselves.
 
 ## What You'll Learn
 
-- ✅ What is Antigravity CLI and where does it live in the Antigravity ecosystem?
+- ✅ What Antigravity CLI is and how it fits into the Antigravity ecosystem.
 - ✅ What the Model Context Protocol (MCP) is and why it's a game-changer.
 - ✅ How BrowserMCP enables AI agents to control web browsers.
 - ✅ How to run automated UI tests from Antigravity CLI.
@@ -69,8 +69,8 @@ Before we dive into the cool stuff, let's make sure you have everything you need
 This lab assumes that you already have:
 
 - **Chrome browser**
-- **Nodejs**
-- **Antigravity CLI**
+- **[Nodejs](https://nodejs.org/en/download/current)**
+- **[Antigravity CLI](https://antigravity.google/docs/cli-install)**
 - **Git**
 
 To use Antigravity CLI, you’ll need to authenticate with Google. When you first launch `agy`, it will automatically prompt you for Google Sign-In via your default web browser. This option comes with a generous free quota of Gemini usage and does not require a Google Cloud project. If you have a Gemini API key or Google Cloud project, you are free to configure this as well. 
@@ -432,6 +432,8 @@ If you want to dig deeper into the tools and concepts we covered today, check ou
 - [BrowserMCP Documentation](https://docs.browsermcp.io/)
 - [Playwright](https://playwright.dev/)
 - [Google AI Studio](https://aistudio.google.com/)
+- [Antigravity CLI Installation](https://antigravity.google/docs/cli-install)
+- [Nodejs](https://nodejs.org/en/download/current)
 
 **Agentic Concepts & Skills**
 
