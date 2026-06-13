@@ -446,3 +446,8 @@ If you want to dig deeper into the tools and concepts we covered today, check ou
 **Troubleshooting & Setup**
 
 - [Resolving WSL Friction with Google Antigravity: The Agy 2.0 and Agy IDE Edition](https://medium.com/google-cloud/resolving-wsl-friction-with-google-antigravity-the-agy-2-0-and-agy-ide-edition-41cee17773c8)
+
+**About the Author**
+
+- [Dazbo's Portfolio](https://dazbo.co.uk)
+- [LinkedIn Profile](https://www.linkedin.com/in/darren-lester-architect/)
