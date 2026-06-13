@@ -14,37 +14,55 @@
 
 # Introduction
 
-Testing web applications can be a chore. Traditional UI testing often feels like a constant battle against fragility. You find yourself writing complex scripts, managing brittle CSS and XPath selectors, and jumping through hoops just to get a simple user flow verified.
+The agentic AI revolution is transforming how we build software, making the entire process feel incredibly cool, exciting, and accessible. Tasks and projects that would have previously taken developers months to complete can now be achieved in a single session using agentic tools. 
 
-But what if you could just *tell* an agent what to test in natural language, and it just... did it?
+One area ripe for this agentic transformation is web application testing. Traditionally, testing web apps has been a chore and a constant battle against fragility. But what if you could bypass that complexity entirely? What if you could simply *tell* an agent what to test in plain, natural language, and let the agent reason about how to execute it?
 
 ![Traditional testing chaos vs Agentic testing magic](media/agentic_testing_magic.png)
 
-In this codelab, we'll explore how to use **Antigravity CLI** and multimodal tools like **BrowserMCP**. You'll see how to create and run automated UI tests using natural language.
+In this codelab, we'll explore how to use **Antigravity CLI** along with agent skills, and multimodal MCP tools like **BrowserMCP**. You'll see how to create and run automated UI tests using natural language, showing how agentic tools can handle complex tasks and give you superpowers as a builder.
+
+Crucially, whilst this codelab focuses on the specific use cases of UI automation and browser remote control, it is the underlying principles and the massive world of possibilities they unlock that are truly important. By teaching agents to use local CLIs, external MCP servers, and APIs, we can delegate complex workflows that we wouldn't otherwise have the time or specialised expertise to handle ourselves.
 
 ## What You'll Learn
 
+- ✅ What is Antigravity CLI and where does it live in the Antigravity ecosystem?
 - ✅ What the Model Context Protocol (MCP) is and why it's a game-changer.
 - ✅ How BrowserMCP enables AI agents to control web browsers.
 - ✅ How to run automated UI tests from Antigravity CLI.
 - ✅ Understanding agent skills and their advantages.
 - ✅ Teaching an agent to use Playwright with a skill.
-- ✅ Leveraging the Google Chrome DevTools MCP and skill together.
-- ✅ A quick glimpse of the Antigravity Browser Subagent.
+- ✅ Understanding Antigravity's built-in browser agent.
 - ✅ Other use cases for browser control.
 
 ## What You'll Do
+
+This codelab makes use of the **Antigravity CLI**, MCP tools, agent skills, and a React demo application.
+
+You will:
 
 1. ✅ Set up your development environment.
 2. ✅ Explore a demo application that needs testing.
 3. ✅ Use Antigravity CLI to interact with the application via BrowserMCP.
 4. ✅ Teach your agent how to use Playwright with an agent skill.
 
+# The Antigravity Ecosystem
+
+> [!NOTE]
+> This is the new **Antigravity CLI** version of the codelab. It replaces the older **Gemini CLI** version of the lab to align with Google's latest tooling.
+
+In May 2026, Google dropped the new Antigravity suite. This was a major overhaul of Antigravity, and a split into these four products:
+
+* **Antigravity 2.0**, which is now the dedicated agent-first “builder” environment on your desktop. Notably, it doesn’t itself include an IDE. Instead, we now interact only with the agent manager. This surface aims to usher in the era of “idea to product” using agents, without concerning ourselves over the code. Many builders who don’t come from a coding background will love this.
+* **Antigravity IDE**, which gives us the more familiar VS Code-esque coding environment, supported by the Antigravity agent harness. Here we can do agent-assisted development, and we always see the code. Coders will feel at home here.
+* **Antigravity SDK**, which gives you the harness and tools that power Antigravity, but exposed as a Python Agent SDK. By importing from `google.antigravity` we can programmatically leverage Antigravity’s capabilities.
+* **Antigravity CLI**, which is the next evolution of the extremely awesome Gemini CLI. It’s still a terminal-first environment for interacting with Gemini models. But the new Antigravity CLI is built in Go, and you can tell; it feels much faster than Gemini CLI, both during startup and in general use. It leverages the same agent “harness” as Antigravity 2.0 and the IDE, and this allows for common settings and configuration across the Antigravity suite.
+
+Although this lab focuses on using Antigravity CLI, everything in this lab can also be done with Agy IDE or Agy 2.0.
+
 # Prerequisites
 
 Before we dive into the cool stuff, let's make sure you have everything you need. 
-
-This codelab makes use of the **Antigravity CLI**, MCP tools, agent skills, and a React demo application.
 
 ## Tools
 
@@ -114,16 +132,22 @@ We can just click on the link to open the application in our browser. Just leave
 
 # The Challenge of UI Testing
 
-Traditional UI testing is notoriously difficult to get right and even harder to maintain. Common pain points include:
+UI testing and automation have traditionally always been difficult things to get right and even harder to master. You do not need to be an expert in UI testing to appreciate this challenge.
 
+Common pain points with traditional UI testing include:
+
+- **High Learning Curve**: Requiring developers to invest huge amounts of time mastering complex domain-specific languages and framework-specific quirks (such as Selenium or Playwright) just to automate a basic interaction.
+- **Brittle Selectors and Automation**: Traditional scripts rely on rigid DOM structures (like `div > div > button`) or specific text labels. What happens if you rename a "log out" button to "log off"? Or move a button to a completely different menu? Or change the structure of your HTML? Traditional testing tools will break when you do those things, leading to constant script maintenance.
 - **Test "Flakiness"**: Tests that pass one minute and fail the next due to timing issues, race conditions, or slow-loading assets.
-- **Brittle Selectors**: Relying on specific DOM structures (like `div > div > button`) that break with the slightest UI tweak, leading to constant script maintenance.
-- **High Learning Curve**: Requiring developers to master complex domain-specific languages and framework-specific quirks (Cypress, Selenium, Playwright) just to automate a basic click.
 - **Environment Parity**: Wrestling with hard-to-replicate application states and the overhead of cleaning up test data.
 
 ![A frustrated robot trying to click a submit button that has moved by 1px, with a collapsing house of browser cards in the background](media/ui_testing_challenge.png)
 
-We need a way to test that focuses on **intent** rather than **implementation**.
+### Intent vs. Implementation
+
+To solve these issues, we need a way to test that focuses on **intent** rather than **implementation**. 
+
+By leveraging agentic AI tools, we can create repeatable automation that is completely insulated from minor UI tweaks and structural changes. Instead of hard-coding names, labels, or the exact hierarchy of objects, the agent executes actions based on the user's natural language intent. If a button moves or its label changes slightly, the agent's multimodal capabilities allow it to locate the element and complete the task successfully.
 
 # MCP to the Rescue
 
@@ -209,7 +233,7 @@ The CLI might first check that the demo application is running on the specified 
 
 A few things to note about the prompt above:
 
-- We start by telling the agent to logout, if the application is already logged in. Note that we don't need to tell the agent to click on specific text like "Exit Gateway". It's smart enough to work out what to click.
+- We start by telling the agent to log out, if the application is already logged in. Note that we don't need to tell the agent to click on specific text like "Exit Gateway". It's smart enough to work out what to click.
 - After logging in and rendering the main page, the agent captures the telemetry information. Again, we don't need to tell the agent to look in specific tiles or match specific words. So if we were to later extend or change the information shown in this page, this prompt will still work and the output will still be captured in our markdown table.
 
 Cool, right?
@@ -249,7 +273,9 @@ Here's the really clever part: **progressive disclosure**. Instead of shoving ev
 
 *Think of it like that scene in The Matrix: The agent looks at a problem, realizes it needs to know Playwright, downloads the skill, and suddenly: "I know kung fu." Boom. Instant expert.*
 
-If you want to know more about skills, check out Romin's blog post [Tutorial : Getting Started with Google Antigravity Skills](https://medium.com/google-cloud/tutorial-getting-started-with-antigravity-skills-864041811e0d). He also has a [codelab](https://codelabs.developers.google.com/getting-started-with-antigravity-skills?hl=en#0) on the same topic.
+If you want to know more about skills, check out:
+- Romin's blog post [Tutorial : Getting Started with Google Antigravity Skills](https://medium.com/google-cloud/tutorial-getting-started-with-antigravity-skills-864041811e0d)
+- My blog [Configuring MCP Servers and Skills for Antigravity CLI and IDE](https://medium.com/google-cloud/configuring-mcp-servers-and-skills-for-antigravity-cli-and-ide-a938c7eebb78)
 
 ## Why Skills are Perfect for Playwright
 
@@ -327,7 +353,7 @@ What's different here?
 
 - We didn't need to start the browser first.
 - We didn't need to start and connect a browser extension.
-- We don't need to tell the agent to logoff first. The test instantiates from a "clean" session.
+- We don't need to tell the agent to log out first. The test instantiates from a "clean" session.
 - We're able to take screenshots and save them as local files.
 
 Shortly after you should see a `dashboard.png` file in the `output` folder.
@@ -340,101 +366,34 @@ But if you re-run with this amended prompt, you'll be able to see the UI too:
 Using Playwright, connect to the application at http://localhost:5173 in **headed** mode, and keep the browser open when you're done. Login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown and record them. Then wait 3 seconds, read them again. Now present the data back to me in a markdown table.
 ```
 
-Shortly, the Agy CLI output should look something like this:
+The Agy CLI output should look something like this:
 
 <img src="media/headed-execution.png" alt=" Result of headed execution with Playwright" width="640">
 <br><br>
 
 How awesome was that?
 
-# But Wait, There's Also Chrome DevTools MCP!
+# Antigravity's Built-In Browser Agent
 
-Chrome DevTools is a set of web developer tools built into the Chrome browser, intended for web development and debugging. It's been around a long time. You know... the console you can interact with when you open More Tools -> Developer Tools in Chrome.
+Google Antigravity comes equipped with its own built-in browser agent ([Browser Subagent](https://antigravity.google/docs/browser-subagent)) that provides browser automation out-of-the-box, without requiring you to install a separate tool like Playwright CLI.
 
-But now it has its own [MCP server](https://github.com/ChromeDevTools/chrome-devtools-mcp), which didn't exist when I first blogged about browser automation last year. But now, you can do everything you can do with BrowserMCP and most of the things you can do with Playwright, without installing anything into your browser, and without installing a local CLI.
+### How it Works
 
-Let's give it a go!
+To control your browser, the built-in browser agent works directly via the **Chrome DevTools Protocol (CDP)**, removing the need for any browser extensions or intermediate plugins in Antigravity 2.0 and the IDE. 
 
-Normally, I work in the WSL environment, but I couldn't get the Chrome DevTools MCP server to talk to my browser in this environment. So, for this part, let's use Google Cloud Shell in the [Google Cloud Console](https://console.cloud.google.com/). Yes, it is possible to use this in Cloud Shell!
+When launched, Antigravity connects to your Chrome instance via a local debugging port over a WebSocket connection. High-level instructions from the agent are translated directly into low-level CDP commands that:
+* Manipulate the page DOM (like clicking elements or entering text).
+* Control browser state and trigger navigation.
+* Capture real-time frames and visual data.
 
-Open the console and open a Cloud Shell session. From there:
+By combining direct CDP control with visual, multimodal analysis, the subagent takes your high-level goal (e.g., "verify that the dashboard displays the correct telemetry values"), analyses the page visually to figure out what actions are required, and executes them itself. It also automatically records videos and takes screenshots of its actions, saving them directly into your workspace as **Artifacts** to serve as visual proof of test execution.
 
-```bash
-# Clone the sample app - like we did before
-git clone https://github.com/derailed-dash/agentic-ui-testing
-cd agentic-ui-testing
+### Tool Availability
 
-# Build the application - like we did before
-make install
+> [!IMPORTANT]
+> The built-in browser agent is not yet supported in the terminal-first **Antigravity CLI (Agy CLI)**. However, you can use it out-of-the-box in **Antigravity IDE** and **Antigravity 2.0** today. Hopefully, support for the browser agent will be coming to Agy CLI in a future release!
 
-# Install the Antigravity CLI (agy)
-curl -fsSL https://antigravity.google/cli/install.sh | bash
-
-# Ensure the agy binary is in your PATH
-export PATH=$PATH:$HOME/.local/bin
-```
-
-Now we need to install a Chrome executable into Cloud Shell:
-
-```bash
-# Get the latest executable for Ubuntu
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-
-# Install it
-sudo apt install ./google-chrome-stable_current_amd64.deb -y
-
-# Check it and get the executable path
-which google-chrome
-
-# Cleanup
-rm google-chrome-stable_current_amd64.deb
-```
-
-One final step: we need to configure the Chrome DevTools MCP server and tell it where to find the Chrome executable. We do this by adding the configuration directly into our global `~/.gemini/config/mcp_config.json` file (create the folder first with `mkdir -p ~/.gemini/config` if it doesn't exist):
-
-```json
-{
-  "mcpServers": {
-    "browsermcp": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@browsermcp/mcp@latest"
-      ]
-    },
-    "chrome-devtools": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "chrome-devtools-mcp@latest",
-        "--executable-path=/usr/bin/google-chrome",
-        "--headless"
-      ]
-    }
-  }
-}
-```
-
-Great! We should be good to go. Launch `agy` from the Cloud Shell, and check that the MCP server is running by typing `/mcp` inside the CLI, like before.
-
-Finally, we're ready to test it with a prompt. 
-
-Let's do it a bit differently. This time, we'll tell Agy CLI to actually launch the demo application and connect to it:
-
-_Launch my demo application with `make dev`. Then, use your built-in browser agent to connect to the application at the exposed localhost URL. Login as 'admin' with password 'password', and verify that the dashboard title says 'System Overview'. Take a screenshot of the dashboard and save it to output/dashboard.png. In the main dashboard, read the telemetry values shown, and present them back to me in a markdown table._
-
-As usual, you'll be prompted to allow the MCP server to run. A few seconds later, Agy CLI should present the results in the table, and will have saved the screenshot. You can go ahead and download the screenshot from Cloud Shell, to check it looks okay.
-
-<img src="media/cloud-shell-success.png" alt="Success in Cloud Shell" width="640">
-<br><br>
-
-# You Can Do This in Antigravity Out of the Box!
-
-Google Antigravity includes the [Browser Subagent](https://antigravity.google/docs/browser-subagent), which provides similar capabilities to Playwright CLI. When you ask the agent in Antigravity to spin up a URL interactively, it will spin up this subagent automatically. 
-
-This subagent takes your high-level goal (e.g. "Check if the login form works"), visually analyzes the page layout via screenshots and the DOM, and figures out the clicks and keystrokes itself. It's essentially a visual, multimodal AI navigating the web just like a human would. And the best part? It automatically records videos and takes screenshots of everything it does, saving them straight into your local workspace as visual proof of what it accomplished. Antigravity calls this visual evidence [Artifacts](https://antigravity.google/docs/artifacts).
-
-*A note for WSL users: Getting the Browser Agent to work in Antigravity is a bit of headache. I have managed to [get it working](https://medium.com/google-cloud/working-with-google-antigravity-in-wsl-944c96c949f3), but I find the subagent inconsistent and unreliable in this environment. So that's one of the reasons I'm loving Playwright CLI!*
+*A note for WSL users: Getting the Browser Agent to work in Antigravity under WSL is now much easier than it used to be. Rather than dealing with complex network routing and port forwarding, you simply need to enable "mirrored" network mode in your WSL configuration. For a complete step-by-step walkthrough, see the guide [Resolving WSL Friction with Google Antigravity: The Agy 2.0 and Agy IDE Edition](https://medium.com/google-cloud/resolving-wsl-friction-with-google-antigravity-the-agy-2-0-and-agy-ide-edition-41cee17773c8).*
 
 # Other Use Cases for Browser Automation
 
@@ -473,8 +432,6 @@ If you want to dig deeper into the tools and concepts we covered today, check ou
 - [BrowserMCP Documentation](https://docs.browsermcp.io/)
 - [Playwright](https://playwright.dev/)
 - [Google AI Studio](https://aistudio.google.com/)
-- [Chrome DevTools](https://developer.chrome.com/docs/devtools)
-- [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp)
 
 **Agentic Concepts & Skills**
 
@@ -486,4 +443,4 @@ If you want to dig deeper into the tools and concepts we covered today, check ou
 
 **Troubleshooting & Setup**
 
-- [Working with Google Antigravity in WSL](https://medium.com/google-cloud/working-with-google-antigravity-in-wsl-944c96c949f3)
+- [Resolving WSL Friction with Google Antigravity: The Agy 2.0 and Agy IDE Edition](https://medium.com/google-cloud/resolving-wsl-friction-with-google-antigravity-the-agy-2-0-and-agy-ide-edition-41cee17773c8)
