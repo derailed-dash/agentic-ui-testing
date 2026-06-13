@@ -9,7 +9,7 @@
 ## Key Links
 
 - [The agentic-ui-testing GitHub repo](https://github.com/derailed-dash/agentic-ui-testing)
-- [This Codelab](https://codelabs.developers.google.com/agentic-ui-testing-with-antigravity-cli)
+- [This Codelab](https://codelabs.developers.google.com/agentic-ui-testing-with-antigravity-cli?utm_campaign=DEVECO_GDEMembers&utm_source=deveco)
 - [My related blog - Creating an Automated UI Test of Your Web App in Seconds with Gemini CLI and BrowserMCP](https://medium.com/google-cloud/creating-an-automated-ui-test-of-your-web-app-in-seconds-with-gemini-cli-and-browsermcp-09cf4afb8940).
 
 # Introduction
@@ -70,7 +70,7 @@ This lab assumes that you already have:
 
 - **Chrome browser**
 - **[Nodejs](https://nodejs.org/en/download/current)**
-- **[Antigravity CLI](https://antigravity.google/docs/cli-install)**
+- **[Antigravity CLI](https://antigravity.google/docs/cli-install?utm_campaign=DEVECO_GDEMembers&utm_source=deveco)**
 - **Git**
 
 To use Antigravity CLI, you’ll need to authenticate with Google. When you first launch `agy`, it will automatically prompt you for Google Sign-In via your default web browser. This option comes with a generous free quota of Gemini usage and does not require a Google Cloud project. If you have a Gemini API key or Google Cloud project, you are free to configure this as well. 
@@ -375,7 +375,7 @@ How awesome was that?
 
 # Antigravity's Built-In Browser Agent
 
-Google Antigravity comes equipped with its own built-in browser agent ([Browser Subagent](https://antigravity.google/docs/browser-subagent)) that provides browser automation out-of-the-box, without requiring you to install a separate tool like Playwright CLI.
+Google Antigravity comes equipped with its own built-in browser agent ([Browser Subagent](https://antigravity.google/docs/browser-subagent?utm_campaign=DEVECO_GDEMembers&utm_source=deveco)) that provides browser automation out-of-the-box, without requiring you to install a separate tool like Playwright CLI.
 
 ### How it Works
 
@@ -431,8 +431,8 @@ If you want to dig deeper into the tools and concepts we covered today, check ou
 - [BrowserMCP GitHub Repository](https://github.com/BrowserMCP/mcp)
 - [BrowserMCP Documentation](https://docs.browsermcp.io/)
 - [Playwright](https://playwright.dev/)
-- [Google AI Studio](https://aistudio.google.com/)
-- [Antigravity CLI Installation](https://antigravity.google/docs/cli-install)
+- [Google AI Studio](https://aistudio.google.com/?utm_campaign=DEVECO_GDEMembers&utm_source=deveco)
+- [Antigravity CLI Installation](https://antigravity.google/docs/cli-install?utm_campaign=DEVECO_GDEMembers&utm_source=deveco)
 - [Nodejs](https://nodejs.org/en/download/current)
 
 **Agentic Concepts & Skills**
@@ -440,7 +440,7 @@ If you want to dig deeper into the tools and concepts we covered today, check ou
 - [Configuring MCP Servers and Skills for Antigravity CLI and IDE](https://medium.com/google-cloud/configuring-mcp-servers-and-skills-for-antigravity-cli-and-ide-a938c7eebb78)
 - [Dialling Our Agents to 11: My Favourite MCP Servers](https://medium.com/google-cloud/dialling-our-agents-to-11-my-favourite-mcp-servers-9549c1442a5e)
 - [Tutorial: Getting Started with Google Antigravity Skills](https://medium.com/google-cloud/tutorial-getting-started-with-antigravity-skills-864041811e0d) by Romin Irani
-- [Codelab: Getting Started with Antigravity Skills](https://codelabs.developers.google.com/getting-started-with-antigravity-skills)
+- [Codelab: Getting Started with Antigravity Skills](https://codelabs.developers.google.com/getting-started-with-antigravity-skills?utm_campaign=DEVECO_GDEMembers&utm_source=deveco)
 - [My Original Blog: Creating an Automated UI Test in Seconds](https://medium.com/google-cloud/creating-an-automated-ui-test-of-your-web-app-in-seconds-with-gemini-cli-and-browsermcp-09cf4afb8940)
 
 **Troubleshooting & Setup**
