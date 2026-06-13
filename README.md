@@ -1,6 +1,6 @@
 # Google Developer Codelab: Automated UI Testing with Antigravity (Agy) CLI, BrowserMCP, Playwright, and the Browser Agent
 
-# About this Repo
+## About this Repo
 
 - This repo: [agentic-ui-testing](https://github.com/derailed-dash/agentic-ui-testing)
 - Author: Darren "Dazbo" Lester
@@ -11,6 +11,12 @@
 - [The agentic-ui-testing GitHub repo](https://github.com/derailed-dash/agentic-ui-testing)
 - [This Codelab](https://codelabs.developers.google.com/agentic-ui-testing-with-antigravity-cli?utm_campaign=DEVECO_GDEMembers&utm_source=deveco)
 - [My related blog - Creating an Automated UI Test of Your Web App in Seconds with Gemini CLI and BrowserMCP](https://medium.com/google-cloud/creating-an-automated-ui-test-of-your-web-app-in-seconds-with-gemini-cli-and-browsermcp-09cf4afb8940).
+
+## Markdown Notes
+
+Everything below this point is included in the Codelab. The Codelab is split into sections, with each section mapping to a H1 (#) heading.
+
+---
 
 # Introduction
 
